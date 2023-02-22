@@ -1,0 +1,37 @@
+Skipping diagnosis & treatment for [Pediatric white blood cell disorders:CON-20305516].
+Skipping diagnosis & treatment for [Pelvic organ prolapse:CON-20315425].
+Skipping diagnosis & treatment for [CVID:CON-20256721].
+Skipping diagnosis & treatment for [CVID:CON-20256721].
+Skipping diagnosis & treatment for [Tongue cancer:CON-20378419].
+Skipping diagnosis & treatment for [Congenital myasthenic syndrome:CON-20209446].
+Skipping diagnosis & treatment for [Tricuspid valve disease:CON-20155128].
+Skipping diagnosis & treatment for [Adnexal tumors:CON-20212893].
+Skipping diagnosis & treatment for [Benign adrenal tumor:CON-20301710].
+Skipping diagnosis & treatment for [Cutaneous b-cell lymphoma:CON-20306945].
+Skipping diagnosis & treatment for [Urethral stricture:CON-20314575].
+Skipping diagnosis & treatment for [POEMS syndrome:CON-20305518].
+Skipping diagnosis & treatment for [Inherited metabolic disorder:CON-20303979].
+Skipping diagnosis & treatment for [Vaginal fistula:CON-20253618].
+Skipping diagnosis & treatment for [Inherited metabolic disorder:CON-20303979].
+Skipping diagnosis & treatment for [Pouchitis:CON-20306105].
+Skipping diagnosis & treatment for [Aortic aneurysm:CON-20369464].
+Skipping diagnosis & treatment for [Aneurysm:CON-20206636].
+Skipping diagnosis & treatment for [Dermatofibrosarcoma protuberans:CON-20306944].
+Skipping diagnosis & treatment for [Dermatofibrosarcoma protuberans:CON-20306944].
+Skipping diagnosis & treatment for [Aortic aneurysm:CON-20369464].
+No name found on https://www.mayoclinic.org/diseases-conditions/west-nile-virus/symptoms-causes/syc-20350320.
+Skipping diagnosis & treatment for [Pediatric white blood cell disorders:CON-20305516].
+Skipping diagnosis & treatment for [Pulmonary valve disease:CON-20155136].
+Skipping diagnosis & treatment for [Atrial flutter:CON-20303975].
+Skipping diagnosis & treatment for [Benign adrenal tumor:CON-20301710].
+Skipping diagnosis & treatment for [Sebaceous carcinoma:CON-20306946].
+Skipping diagnosis & treatment for [Focal segmental glomerulosclerosis:CON-20208703].
+Skipping diagnosis & treatment for [Movement disorder:CON-20339789].
+Skipping diagnosis & treatment for [Focal segmental glomerulosclerosis:CON-20208703].
+Skipping diagnosis & treatment for [Sleep disorders:CON-20197160].
+Skipping diagnosis & treatment for [Germ cell tumor:CON-20167636].
+Skipping diagnosis & treatment for [Non-melanoma skin cancer:CON-20248514].
+Skipping diagnosis & treatment for [Head and neck cancer:CON-20198285].
+Skipping diagnosis & treatment for [Central nervous system vascular malformations:CON-20301691].
+Skipping diagnosis & treatment for [Suspicious breast lumps:CON-20305543].
+No name found on https://www.mayoclinic.org/diseases-conditions/chagas-disease/symptoms-causes/syc-20356212.

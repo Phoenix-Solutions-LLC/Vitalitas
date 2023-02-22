@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "966765070451",
+    "project_id": "vitalitas-bb512",
+    "storage_bucket": "vitalitas-bb512.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966765070451:android:e727c0f0b46b0d76520206",
+        "android_client_info": {
+          "package_name": "com.patetlex.vitalitas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "966765070451-bpbo681pps1c1h434aj4dnk8a2ft0krv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCv8NhhZ_eN6xBHIu6dwILoxHZKrnnYIz8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "966765070451-bpbo681pps1c1h434aj4dnk8a2ft0krv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.patetlex.vitalitas"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
