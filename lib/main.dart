@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vitalitas/data/mayoclinic/conditon.dart';
+import 'package:vitalitas/data/mayoclinic/drug.dart';
+import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
 
@@ -30,7 +33,9 @@ class Vitalitas extends StatelessWidget {
       title: 'Vitalitas',
       home: LoadingPage(
         task: () async {
-          await Future.delayed(const Duration(seconds: 3));
+          await Condition.load();
+          await Drug.load();
+          await HealthAppState.load();
           return LandingPage();
         },
       ),

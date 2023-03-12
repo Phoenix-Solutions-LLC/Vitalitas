@@ -1,91 +1,30 @@
 package com.patetlex.vitalitas.database;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.patetlex.vitalitas.database.mayoclinic.DataEntry;
-import com.patetlex.vitalitas.database.mayoclinic.ScrapeableSitemap;
-import com.patetlex.vitalitas.database.mayoclinic.openai.TrainingEntry;
-import com.patetlex.vitalitas.database.mayoclinic.sitemap.Conditions;
-import com.patetlex.vitalitas.database.mayoclinic.sitemap.Drugs;
+import com.patetlex.vitalitas.database.scrape.DataEntry;
+import com.patetlex.vitalitas.database.scrape.ScrapeableSitemap;
+import com.patetlex.vitalitas.database.scrape.bodybuilding.Exercises;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.util.ArrayList;
+import javax.xml.crypto.Data;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 public class Main {
-    private static final Gson gson = new Gson();
-    private static final Gson pretty = new GsonBuilder().setPrettyPrinting().create();
+    public static void main(String[] args) {
+        DatabaseBuilder builder = new DatabaseBuilder().fromBuild(new Exercises());
 
-    public static void main(String[] args) throws IOException {
-        File buildFolder = new File("build\\");
-        buildFolder.mkdir();
-        buildFolder.createNewFile();
-
-        List<TrainingEntry> allEntries = new ArrayList<>();
-        Consumer<List<TrainingEntry>> addingConsumer = new Consumer<List<TrainingEntry>>() {
+        builder.getData().forEach(new BiConsumer<ScrapeableSitemap, List<DataEntry>>() {
             @Override
-            public void accept(List<TrainingEntry> entries) {
-                allEntries.addAll(entries);
-            }
-        };
-
-/*        String json = Files.readString(new File(buildFolder.getAbsolutePath() + "\\drugs\\data.json").toPath());
-        for (DataEntry entry : new Drugs().fromJson(json)) {
-            allEntries.addAll(entry.buildTrainingEntries());
-        }*/
-
-        String log = "";
-        log = log + buildFiles("drugs", new Drugs(), addingConsumer);
-        log = log + buildFiles("conditions", new Conditions(), addingConsumer);
-
-
-        System.out.println("Building training and log files.");
-        File trainingData = new File(buildFolder.getAbsolutePath() + "\\training_data.json");
-        if (trainingData.exists())
-            trainingData.delete();
-        trainingData.createNewFile();
-        FileWriter writer = new FileWriter(trainingData);
-        writer.write(gson.toJson(allEntries));
-        writer.flush();
-        writer.close();
-
-        File logFile = new File(buildFolder.getAbsolutePath() + "\\log.txt");
-        if (logFile.exists())
-            logFile.delete();
-        logFile.createNewFile();
-        FileWriter writer1 = new FileWriter(logFile);
-        writer1.write(log);
-        writer1.flush();
-        writer1.close();
-    }
-
-    public static String buildFiles(String fileName, ScrapeableSitemap sitemap, Consumer<List<TrainingEntry>> trainingEntryConsumer) throws IOException {
-        File outFolder = new File("build\\" + fileName);
-        outFolder.mkdir();
-        outFolder.createNewFile();
-        File data = new File(outFolder.getAbsolutePath() + "\\data.json");
-        if (data.exists())
-            data.delete();
-        data.createNewFile();
-        sitemap.scrapeSitemap(new Consumer<List<DataEntry>>() {
-            @Override
-            public void accept(List<DataEntry> dataEntries) {
-                String json = pretty.toJson(dataEntries);
-                try {
-                    FileWriter writer = new FileWriter(data);
-                    writer.write(json);
-                    writer.flush();
-                    writer.close();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            public void accept(ScrapeableSitemap scrapeableSitemap, List<DataEntry> dataEntries) {
+                if (scrapeableSitemap instanceof Exercises) {
+                    for (DataEntry entry : dataEntries) {
+                        Exercises.ExerciseEntry exerciseEntry = (Exercises.ExerciseEntry) entry;
+                        exerciseEntry.name = exerciseEntry.name.trim();
+                    }
                 }
             }
-        }, trainingEntryConsumer);
-        return sitemap.getLog();
+        });
+
+        int tokens = builder.build();
+        System.out.println("Uses " + tokens + " tokens. Cost estimate of $" + ((tokens / 1000) * 0.012) + ".");
     }
 }
