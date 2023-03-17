@@ -82,7 +82,7 @@ class VerifyPageState extends State<VerifyPage> {
   Widget build(BuildContext context) {
     if (verified) {
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => HomePage()));
+          context, MaterialPageRoute(builder: (context) => HomePage.load()));
       return Scaffold();
     }
     return Scaffold(

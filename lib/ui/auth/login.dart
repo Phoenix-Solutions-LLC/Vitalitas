@@ -123,8 +123,10 @@ class LoginPageState extends State<LoginPage> {
           Authentification.signInWithGoogle(context: context).then((value) => {
                 if (Authentification.currentUser != null)
                   {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()))
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomePage.load()))
                   }
               });
         },
@@ -161,6 +163,7 @@ class LoginPageState extends State<LoginPage> {
                   alignment: Alignment.center,
                   child: Text('Log in with Google',
                       style: TextStyle(
+                          fontFamily: 'Comfort',
                           color: Colors.white,
                           fontSize: 18,
                           fontWeight: FontWeight.w400)),

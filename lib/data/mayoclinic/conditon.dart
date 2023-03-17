@@ -38,7 +38,7 @@ class Condition {
           name: obj['name'].toString(),
           pocId: obj['pocId'].toString(),
           description: obj['description'].toString(),
-          backLink: obj['backlink'].toString(),
+          backLink: obj['backLink'].toString(),
           commonNames: obj['commonNames'] ?? [],
           symptoms: obj['symptoms'] ?? [],
           causes: obj['causes'] ?? [],
@@ -297,7 +297,7 @@ class Condition {
           },
           colorBuilder: (b) => b ? Colors.greenAccent : Vitalitas.theme.fg,
           iconBuilder: (value) => value
-              ? Icon(Icons.check, color: Colors.green)
+              ? Icon(Icons.check_rounded, color: Colors.green)
               : Icon(
                   Icons.clear,
                   color: Colors.red,
@@ -320,7 +320,7 @@ class Condition {
                 color: Vitalitas.theme.txt),
             child: InkWell(
                 onTap: () {
-                  launchUrl(Uri.parse(this.backLink));
+                  launchUrl(Uri.parse(backLink));
                 },
                 child: Text(
                   'Learn More',
@@ -428,11 +428,10 @@ class Condition {
             SizedBox(
               width: 5,
             ),
-            Center(
+            Expanded(
               child: DefaultTextStyle(
                   style: TextStyle(
                       fontFamily: 'Comfort',
-                      fontWeight: FontWeight.bold,
                       fontSize: 14,
                       color: Vitalitas.theme.txt),
                   child: Text(

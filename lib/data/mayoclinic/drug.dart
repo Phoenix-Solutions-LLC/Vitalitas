@@ -38,7 +38,7 @@ class Drug {
           name: obj['name'].toString(),
           pocId: obj['pocId'].toString(),
           description: obj['description'].toString(),
-          backLink: obj['backlink'].toString(),
+          backLink: obj['backLink'].toString(),
           brandNames: obj['brandNames'] ?? [],
           symptoms: obj['symptoms'] ?? {});
       d.added = ddata.contains(obj['pocId'].toString());
@@ -282,7 +282,7 @@ class Drug {
                 color: Vitalitas.theme.txt),
             child: InkWell(
                 onTap: () {
-                  launchUrl(Uri.parse(this.backLink));
+                  launchUrl(Uri.parse(backLink));
                 },
                 child: Text(
                   'Learn More',
@@ -390,11 +390,10 @@ class Drug {
             SizedBox(
               width: 5,
             ),
-            Center(
+            Expanded(
               child: DefaultTextStyle(
                   style: TextStyle(
                       fontFamily: 'Comfort',
-                      fontWeight: FontWeight.bold,
                       fontSize: 14,
                       color: Vitalitas.theme.txt),
                   child: Text(

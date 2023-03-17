@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/ui/appstate/health.dart';
@@ -29,16 +31,15 @@ class Vitalitas extends StatelessWidget {
     theme.fg = Colors.red[800];
     theme.acc = Colors.red[200];
     theme.txt = Colors.black;
+
+    Widget page = LandingPage();
+    if (Authentification.currentUser != null &&
+        Authentification.currentUser!.emailVerified) {
+      page = HomePage.load();
+    }
     return MaterialApp(
       title: 'Vitalitas',
-      home: LoadingPage(
-        task: () async {
-          await Condition.load();
-          await Drug.load();
-          await HealthAppState.load();
-          return LandingPage();
-        },
-      ),
+      home: page,
     );
   }
 }

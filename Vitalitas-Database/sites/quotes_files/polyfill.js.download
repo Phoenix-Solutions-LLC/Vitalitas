@@ -1,0 +1,221 @@
+/* Polyfill service v3.25.1
+ * For detailed credits and licence information see https://github.com/financial-times/polyfill-service.
+ * 
+ * Features requested: es6
+ * 
+ * - Array.prototype.find, License: CC0 (required by "es6")
+ * - Array.prototype.findIndex, License: CC0 (required by "es6")
+ * - Math.acosh, License: CC0 (required by "es6")
+ * - Math.asinh, License: CC0 (required by "es6")
+ * - Math.atanh, License: CC0 (required by "es6")
+ * - Math.cbrt, License: CC0 (required by "es6")
+ * - Math.clz32, License: CC0 (required by "es6")
+ * - Math.cosh, License: CC0 (required by "es6")
+ * - Math.expm1, License: CC0 (required by "es6")
+ * - Math.hypot, License: CC0 (required by "es6")
+ * - Math.imul, License: CC0 (required by "es6")
+ * - Math.log10, License: CC0 (required by "es6")
+ * - Math.log1p, License: CC0 (required by "es6")
+ * - Math.log2, License: CC0 (required by "es6")
+ * - Math.sign, License: CC0 (required by "es6")
+ * - Math.sinh, License: CC0 (required by "es6")
+ * - Math.tanh, License: CC0 (required by "es6")
+ * - Math.trunc, License: CC0 (required by "es6")
+ * - Number.isFinite, License: MIT (required by "es6")
+ * - Object.is, License: CC0 (required by "es6")
+ * - String.prototype.repeat, License: CC0 (required by "es6") */
+
+(function(self, undefined) {
+
+// Array.prototype.find
+Object.defineProperty(Array.prototype, 'find', {
+	configurable: true,
+	value: function find(callback) {
+		if (this === undefined || this === null) {
+			throw new TypeError(this + ' is not an object');
+		}
+
+		if (typeof callback !== 'function') {
+			throw new TypeError(callback + ' is not a function');
+		}
+
+		var
+		object = Object(this),
+		scope = arguments[1],
+		arraylike = object instanceof String ? object.split('') : object,
+		length = Math.max(Math.min(arraylike.length, 9007199254740991), 0) || 0,
+		index = -1,
+		element;
+
+		while (++index < length) {
+			if (index in arraylike) {
+				element = arraylike[index];
+
+				if (callback.call(scope, element, index, object)) {
+					return element;
+				}
+			}
+		}
+	},
+	writable: true
+});
+
+// Array.prototype.findIndex
+Object.defineProperty(Array.prototype, 'findIndex', {
+	configurable: true,
+	value: function findIndex(callback) {
+		if (this === undefined || this === null) {
+			throw new TypeError(this + ' is not an object');
+		}
+
+		if (typeof callback !== 'function') {
+			throw new TypeError(callback + ' is not a function');
+		}
+
+		var
+		object = Object(this),
+		scope = arguments[1],
+		arraylike = object instanceof String ? object.split('') : object,
+		length = Math.max(Math.min(arraylike.length, 9007199254740991), 0) || 0,
+		index = -1;
+
+		while (++index < length) {
+			if (index in arraylike) {
+				if (callback.call(scope, arraylike[index], index, object)) {
+					return index;
+				}
+			}
+		}
+
+		return -1;
+	},
+	writable: true
+});
+
+// Math.acosh
+Math.acosh = function (x) {
+  return Math.log(x + Math.sqrt(x * x - 1));
+};
+// Math.asinh
+Math.asinh = function asinh(x) {
+	return x === -Infinity ? x : Math.log(x + Math.sqrt(x * x + 1));
+};
+
+// Math.atanh
+Math.atanh = function atanh(x) {
+	return Math.log((1 + x) / (1 - x)) / 2;
+};
+
+// Math.cbrt
+Math.cbrt = function cbrt(x) {
+	var y = Math.pow(Math.abs(x), 1 / 3);
+
+	return x < 0 ? -y : y;
+};
+
+// Math.clz32
+Math.clz32 = function clz32(x) {
+	var value = Number(x) >>> 0;
+
+	return value ? 32 - value.toString(2).length : 32;
+};
+
+// Math.cosh
+Math.cosh = function cosh(x) {
+	var y = Math.exp(x);
+
+	return (y + 1 / y) / 2;
+};
+
+// Math.expm1
+Math.expm1 = function expm1(x) {
+	return Math.exp(x) - 1;
+};
+
+// Math.hypot
+Math.hypot = function hypot() {
+	var args = arguments, index = -1, y = 0;
+
+	while (++index in args && Math.abs(y) !== Infinity) {
+		y += args[index] * args[index];
+	}
+
+	return Math.abs(y) === Infinity ? Infinity : Math.sqrt(y);
+};
+
+// Math.imul
+Math.imul = function imul(a, b) {
+	var
+	ah = (a >>> 16) & 0xffff,
+	al = a & 0xffff,
+	bh = (b >>> 16) & 0xffff,
+	bl = b & 0xffff;
+
+	return ((al * bl) + (((ah * bl + al * bh) << 16) >>> 0) | 0);
+};
+
+// Math.log10
+Math.log10 = function log10(x) {
+	return Math.log(x) / Math.LN10;
+};
+
+// Math.log1p
+Math.log1p = function log1p(x) {
+	return Math.log(1 + x);
+};
+
+// Math.log2
+Math.log2 = function log2(x) {
+	return Math.log(x) / Math.LN2;
+};
+
+// Math.sign
+Math.sign = function sign(x) {
+	return !(x = Number(x)) ? x : x > 0 ? 1 : -1;
+};
+
+// Math.sinh
+Math.sinh = function sinh(x) {
+	var y = Math.exp(x);
+
+	return (y - 1 / y) / 2;
+};
+
+// Math.tanh
+Math.tanh = function tanh(x) {
+	var y;
+
+	return x === Infinity ? 1 : x === -Infinity ? -1 : (y = Math.exp(2 * x), (y - 1) / (y + 1));
+};
+
+// Math.trunc
+Math.trunc = function trunc(x) {
+	return x < 0 ? Math.ceil(x) : Math.floor(x);
+};
+
+// Number.isFinite
+Number.isFinite = Number.isFinite || function(value) {
+    return typeof value === "number" && isFinite(value);
+};
+
+// Object.is
+Object.is = function is(a, b) {
+	return (a === b && (a !== 0 || 1 / a === 1 / b)) || (a !== a && b !== b);
+};
+
+// String.prototype.repeat
+String.prototype.repeat = function repeat(count) {
+	'use strict';
+
+	if (this === undefined || this === null) {
+		throw new TypeError(this + ' is not an object');
+	}
+
+	if (count < 0 || count === Infinity) {
+		throw new RangeError(count + ' is less than zero or equal to infinity');
+	}
+
+	return new Array((parseInt(count, 10) || 0) + 1).join(this);
+};
+})
+('object' === typeof window && window || 'object' === typeof self && self || 'object' === typeof global && global || {});

@@ -93,7 +93,6 @@ public abstract class ScrapeableSitemap {
                     System.out.println("Removed duplicate for " + entry.toString() + ".");
                 }
             }
-            System.out.println("Removed " + (data.size() - ids.size()) + " duplicates.");
             dataEntryConsumer.accept(data);
             trainingEntryConsumer.accept(trainingData);
             System.out.println("Finished scraping sitemap.");

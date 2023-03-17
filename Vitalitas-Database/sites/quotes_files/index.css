@@ -1,0 +1,210 @@
+/*!****************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js!./src/inc-consent-banner/index.scss ***!
+  \****************************************************************************************************************************/
+.bcpNotificationBar {
+  --primary-orange: #fc3f23;
+  background-color: #000;
+  z-index: 999999 !important;
+}
+
+.bcpNotificationBarContent {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-top: 20px;
+}
+
+.bcpNotificationBarTemplate {
+  flex-direction: column;
+  padding: 20px 0;
+  row-gap: 30px;
+}
+
+.bcpNotificationBarTemplate > .bccomplexobject {
+  flex: 0 0 50px;
+}
+
+.bcpNotificationBarTemplate > .barTitle {
+  margin-right: 0px;
+  padding-top: 0 !important;
+}
+
+.bcpObjectiveTemplate {
+  padding: 0 !important;
+}
+
+.bcpNotificationBarTemplate > .barTitle {
+  font-family: "tablet-gothic", sans-serif;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
+  text-align: left;
+  color: #fff;
+  word-break: break-word;
+  padding: 5px 11px;
+  margin-right: 0px;
+  padding-top: 0 !important;
+  flex: 1;
+}
+
+.bcpNotificationBarTemplate > .barTitle > a {
+  color: #fff;
+}
+
+.bcpObjectiveTemplate .bcpOkButton,
+.bcpObjectiveTemplate .bcpConsentOKButton {
+  font-family: "tablet-gothic", sans-serif !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  line-height: 17.92px !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bcpObjectiveTemplate .bcpOkButton:hover,
+.bcpObjectiveTemplate .bcpConsentOKButton:hover {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #fff !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.bcpObjectiveTemplate .bcpOkButton,
+.bcpObjectiveTemplate .bcpConsentOKButton {
+  background-color: var(--primary-orange) !important;
+  border: none;
+  color: #fff;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.bcpObjectiveTemplate .bcpOkButton:hover,
+.bcpObjectiveTemplate .bcpConsentOKButton:hover {
+  background: #fff !important;
+  color: #000 !important;
+  border: 1px solid #fff !important;
+  box-shadow: none !important;
+  opacity: 1 !important;
+}
+
+.bcpNotificationBarCloseIcon {
+  width: 14px;
+  height: 14px;
+  background-image: url("http://img-cdn.inc.com/image/upload/v1660852361/cmfxxrn52aijizrnriyv.svg");
+  background-repeat: none;
+  top: 20px !important;
+  right: 25px !important;
+  background-size: cover;
+  margin: 0 !important;
+}
+
+.bcpNotificationBarCloseIcon:hover {
+  background-position: initial !important;
+}
+
+/* TABLET viewport width >= than 768px */
+@media screen and (min-width: 600px) {
+  .bcpNotificationBarContent {
+    padding-right: 75px;
+    padding-left: 75px;
+  }
+  .bcpObjectiveTemplate {
+    padding: 0 !important;
+  }
+  .bcpNotificationBarGDPR {
+    width: 100%;
+    min-width: 0;
+  }
+  .bcpNotificationBarTemplate {
+    flex-direction: column;
+    padding: 20px 0;
+    row-gap: 30px;
+  }
+  .bcpNotificationBarTemplate > .bccomplexobject {
+    flex: 0 0 50px;
+  }
+  .bcpNotificationBarTemplate > .barTitle {
+    padding-top: 0 !important;
+  }
+  .bcpObjectiveButtonsTemplate {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .bcpNotificationBarButtons {
+    margin-top: 5px;
+    min-width: 100%;
+    width: 100%;
+  }
+  .bcpObjectiveTemplate .bcpOkButton,
+  .bcpObjectiveTemplate .bcpConsentOKButton {
+    font-family: "tablet-gothic", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 17.92px;
+    color: #fff;
+    box-shadow: none;
+    opacity: 1;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .bcpObjectiveTemplate .bcpOkButton:hover,
+  .bcpObjectiveTemplate .bcpConsentOKButton:hover {
+    background: #fff !important;
+    color: #000 !important;
+    border: 1px solid #fff !important;
+    box-shadow: none !important;
+    opacity: 1 !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
+/* DESKTOP viewport width >= than 768px */
+@media screen and (min-width: 920px) {
+  .bcpNotificationBarContent {
+    padding-right: 50px;
+    padding-left: 50px;
+    padding-top: 7px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    column-gap: 80px;
+  }
+  .bcpNotificationBarTemplate {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: 80px;
+  }
+  .bcpNotificationBarTemplate > .bccomplexobject {
+    width: 100%;
+    flex: 0 0 270px;
+    padding-right: 20px;
+  }
+}
+/* X-LARGE viewport width >= than 768px */
+/* XX-LARGE viewport width >= than 768px */
+@media screen and (min-width: 1600px) {
+  .bcpNotificationBarContent {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}

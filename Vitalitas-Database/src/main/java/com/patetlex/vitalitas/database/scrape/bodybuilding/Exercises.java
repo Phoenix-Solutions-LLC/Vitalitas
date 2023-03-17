@@ -72,7 +72,6 @@ public class Exercises extends ScrapeableSitemap {
             }
         }
         System.out.println("Finished scraping sitemap.");
-        dataEntryConsumer.accept(data);
         this.addTrainingData(trainingData);
         List<String> ids = new ArrayList<>();
         Iterator<DataEntry> iterator = data.iterator();
@@ -87,6 +86,7 @@ public class Exercises extends ScrapeableSitemap {
                 System.out.println("Removed duplicate for " + entry.toString() + ".");
             }
         }
+        dataEntryConsumer.accept(data);
         trainingEntryConsumer.accept(trainingData);
     }
 

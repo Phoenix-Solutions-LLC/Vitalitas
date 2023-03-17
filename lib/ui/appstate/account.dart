@@ -38,7 +38,7 @@ class AccountAppState extends AppState {
           height: 55,
           boxShadow: const [
             BoxShadow(
-              color: Colors.black38,
+              color: Colors.black12,
               spreadRadius: 1,
               blurRadius: 2,
               offset: Offset(0, 1.5),

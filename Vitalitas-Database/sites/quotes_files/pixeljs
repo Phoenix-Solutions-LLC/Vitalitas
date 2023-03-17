@@ -1,0 +1,79 @@
+(function() {
+    var ref = encodeURIComponent((parent !== window) ? document.referrer : document.location);
+    
+        
+        
+            const l = document.createElement("img");
+            let url = "https://idsync.rlcdn.com/425276.gif?partner_uid=084b890e4d4a938e1e46aae850c8f730";
+            if (0) {
+                url += "&ct=4&cv=" + encodeURIComponent(dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D["consent_string"] ?? '');
+            }
+            l.src = url;
+            l.height=0;l.width=0;l.style="display:none; visibility: hidden";
+            document.body.appendChild(l);
+        
+        var r = new XMLHttpRequest();
+        r.withCredentials = true;
+        var s ="r=" + ref;
+        if (!(typeof dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D === "undefined")) {
+            
+                const b = document.createElement("img");
+                b.src = "https://x.bidswitch.net/check_uuid/https%3A%2F%2Fdata.dianomi.com%2Ffrontend%2Fbidswitch%3Fuid%3D%24%7BBSW_UUID%7D%26cookie_age%3D%24%7BCOOKIE_AGE%7D";
+                b.height=0;b.width=0;b.style="display:none; visibility: hidden";
+                document.body.appendChild(b);
+            
+            const m = document.createElement("iframe");
+            m.id = "multisync-iframe";
+            m.sandbox = "allow-forms allow-scripts allow-popups allow-pointer-lock allow-same-origin";
+            m.height = 0; m.width = 0; m.marginwidth = 0; m.marginheight = 0; m.scrolling="no"; m.frameborder = 0; m.style = "border: 0px; display: none;";
+            const gdpr = 0;
+            const gdpr_consent = encodeURIComponent(dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D["consent_string"] ?? '');
+            const us_privacy = dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D["us_privacy"] ?? "";
+            let url = "https://secure-assets.rubiconproject.com/utils/xapi/multi-sync.html?p=dianomi&endpoint=us-east";
+            url +="&gdpr=" + gdpr + "&gdpr_consent=" + gdpr_consent;
+            m.src = url;
+            document.body.appendChild(m);
+
+            let isDev = !!""
+
+            function getEmptyIframe() {
+                let frame = document.createElement('iframe');
+                frame.setAttribute('frameborder', 0);
+                frame.setAttribute('scrolling', 'no');
+                frame.setAttribute('marginheight', 0);
+                frame.setAttribute('marginwidth', 0);
+                frame.setAttribute('TOPMARGIN', 0);
+                frame.setAttribute('LEFTMARGIN', 0);
+                frame.setAttribute('allowtransparency', 'true');
+                frame.setAttribute('width', 0);
+                frame.setAttribute('height', 0);
+                frame.style = 'border: 0px; display: none;';
+                return frame;
+            }
+            if (dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D["include_rtb"] === 2) {
+                let cookieSyncIframe = getEmptyIframe();
+                cookieSyncIframe.id = 'dianomi-cookie-sync-iframe';
+                let cookieSyncIframeURL = `https://${ isDev ? 'dev' : 'www'}.dianomi.com/prebid/cookie_sync.html?`;
+                cookieSyncIframeURL += 'gdpr=' + gdpr + '&gdpr_consent=' + gdpr_consent;
+                cookieSyncIframeURL += '&us_privacy=' + us_privacy;
+                cookieSyncIframeURL += '&bidders=adf,rubicon,grid,adform,pubmatic,openx,freewheelssp';
+                cookieSyncIframe.src = cookieSyncIframeURL;
+                document.body.appendChild(cookieSyncIframe);
+            }
+        }
+
+        
+
+
+
+    
+        for (var property in dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D) {
+            if (dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D.hasOwnProperty(property)  && dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D[property] !== null) {
+                s += "&" + property + "=" + encodeURIComponent(dianomi_tag_params_0x4A86E95F4C7B4105AB6E85DFCAC35D9D[property]);
+            }
+        }
+        r.open("GET", "https://data.dianomi.com/frontend/pixel?" + s, true);
+        r.send();
+    
+
+    })();

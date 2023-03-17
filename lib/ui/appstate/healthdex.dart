@@ -2,6 +2,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/src/gbutton.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/main.dart';
@@ -90,6 +91,33 @@ class HealthdexAppState extends AppState {
                       ),
                     ),
                   ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(15),
+                  child: InkWell(
+                    onTap: () {
+                      state.setState(() {
+                        currentScreen = 'Exercise';
+                      });
+                    },
+                    child: Card(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          Icon(
+                            Icons.run_circle_outlined,
+                            size: 65,
+                          ),
+                          Text('Exercises',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Comfort',
+                                  fontSize: 25))
+                        ],
+                      ),
+                    ),
+                  ),
                 )
               ],
             ))
@@ -99,12 +127,15 @@ class HealthdexAppState extends AppState {
       Map<String, Widget> vals = {
         'main': main,
         'Drug': Drug.getGrid(state),
-        'Condition': Condition.getGrid(state)
+        'Condition': Condition.getGrid(state),
+        'Exercise': Exercise.getGrid(state)
       };
       return vals[currentScreen];
     } else if (currentScreen is Condition) {
       return currentScreen.getDetails(state);
     } else if (currentScreen is Drug) {
+      return currentScreen.getDetails(state);
+    } else if (currentScreen is Exercise) {
       return currentScreen.getDetails(state);
     }
     return main;

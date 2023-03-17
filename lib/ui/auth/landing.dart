@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vitalitas/auth/auth.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/login.dart';
 import 'package:vitalitas/ui/auth/register.dart';
+import 'package:vitalitas/ui/auth/verify.dart';
 
 class LandingPage extends StatefulWidget {
   @override
