@@ -20,7 +20,7 @@ import 'package:vitalitas/ui/loading.dart';
 import 'package:vitalitas/ui/widgets/clip/wave.dart';
 
 class HomePage extends StatefulWidget {
-  static StatelessWidget load() {
+  static StatefulWidget load() {
     return LoadingPage(
       task: () async {
         await Condition.load();
@@ -28,6 +28,14 @@ class HomePage extends StatefulWidget {
         await Exercise.load();
         await Quote.load();
         await HealthAppState.load();
+        await BotAppState.load();
+        await AccountAppState.load();
+
+        dynamic pS = await Data.getUserField('SurveyFeedback');
+        if (pS is String) {
+          HomeAppState.surveyFeedback = pS;
+        }
+
         return HomePage();
       },
     );
@@ -40,6 +48,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeAppState extends AppState {
+  static String? surveyFeedback;
   @override
   Widget? getBody(State state) {
     Size screen = MediaQuery.of(state.context).size;
@@ -69,6 +78,34 @@ class HomeAppState extends AppState {
         quote = Quote.quotes[date];
         break;
       }
+    }
+
+    List<Widget> extraForYou = [];
+    if (surveyFeedback != null) {
+      extraForYou.add(
+        Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Watch out for your feedback:',
+              style: TextStyle(
+                  fontFamily: 'Comfort',
+                  fontSize: 25,
+                  color: Vitalitas.theme.txt),
+            )),
+      );
+      extraForYou.add(SizedBox(
+        height: 10,
+      ));
+      extraForYou.add(Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            surveyFeedback!,
+            style: TextStyle(
+              fontFamily: 'Comfort',
+              fontSize: 16,
+              color: Vitalitas.theme.txt,
+            ),
+          )));
     }
 
     return SingleChildScrollView(
@@ -150,7 +187,7 @@ class HomeAppState extends AppState {
                 Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'Start your day off with some inspiration:',
+                      'Live your day with some inspiration:',
                       style: TextStyle(
                           fontFamily: 'Comfort',
                           fontSize: 25,
@@ -207,6 +244,12 @@ class HomeAppState extends AppState {
                                           color: Vitalitas.theme.txt),
                                     ))),
                         ]))),
+                SizedBox(
+                  height: 35,
+                ),
+                Column(
+                  children: extraForYou,
+                )
               ],
             )),
         SizedBox(

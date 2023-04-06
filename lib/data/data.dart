@@ -28,7 +28,7 @@ class Data {
     }
   }
 
-  static void setUserField(String field, dynamic value) async {
+  static Future<void> setUserField(String field, dynamic value) async {
     DocumentReference? doc = await currentUserDoc();
     DocumentSnapshot snapshot = await doc!.get();
     Map<String, dynamic> currentData = snapshot.data() as Map<String, dynamic>;

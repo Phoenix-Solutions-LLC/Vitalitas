@@ -1,0 +1,24 @@
+diff --git a/ios/Podfile.lock b/ios/Podfile.lock
+index 447894a..141880b 100644
+--- a/ios/Podfile.lock
++++ b/ios/Podfile.lock
+@@ -833,6 +833,6 @@ SPEC CHECKSUMS:
+   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
+   webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
+ 
+-PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3
++PODFILE CHECKSUM: 542a9c7d9a0b78ac8dc6b785dd41c4bfaaaf6a68
+ 
+ COCOAPODS: 1.12.0
+diff --git a/ios/Runner.xcworkspace/contents.xcworkspacedata b/ios/Runner.xcworkspace/contents.xcworkspacedata
+index 1d526a1..21a3cc1 100644
+--- a/ios/Runner.xcworkspace/contents.xcworkspacedata
++++ b/ios/Runner.xcworkspace/contents.xcworkspacedata
+@@ -4,4 +4,7 @@
+    <FileRef
+       location = "group:Runner.xcodeproj">
+    </FileRef>
++   <FileRef
++      location = "group:Pods/Pods.xcodeproj">
++   </FileRef>
+ </Workspace>

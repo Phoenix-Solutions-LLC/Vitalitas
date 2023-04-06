@@ -17,7 +17,7 @@ class Workout {
 
   Workout.fromJson(Map<String, dynamic> json)
       : sets = (json['sets'] as List).map((set) => Set.fromJson(set)).toList(),
-        intensity = json['intensity'] as double;
+        intensity = (json['intensity'] as num).toDouble();
 
   Map<String, dynamic> toJson() {
     return {'sets': sets, 'intensity': intensity};
@@ -25,9 +25,14 @@ class Workout {
 
   static Future<void> update() async {
     Map<String, String> data = {};
-    for (DateTime date in Exercise.workouts.keys) {
-      data[date.toString()] =
-          base64Encode(utf8.encode(jsonEncode(Exercise.workouts[date])));
+    if (Exercise.todaysWorkout != null) {
+      data[DateTime.now().toString()] =
+          base64Encode(utf8.encode(jsonEncode(Exercise.todaysWorkout)));
+    }
+    if (Exercise.yesterdaysWorkout != null) {
+      DateTime now = DateTime.now();
+      data[DateTime(now.year, now.month, now.day - 1).toString()] =
+          base64Encode(utf8.encode(jsonEncode(Exercise.yesterdaysWorkout)));
     }
     Data.setUserField('Workouts', data);
   }

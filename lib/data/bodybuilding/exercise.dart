@@ -55,11 +55,12 @@ class Exercise {
       Data.setUserField('Workouts', {});
       res = {};
     }
+    Map<DateTime, Workout> workouts = {};
     for (String key in res.keys) {
       workouts[DateTime.parse(key)] =
           Workout.fromJson(jsonDecode(utf8.decode(base64Decode(res[key]))));
     }
-    Workout? yesterdaysWorkout;
+    List<DateTime> removal = [];
     for (DateTime date in workouts.keys) {
       if (date.day == DateTime.now().day &&
           date.month == DateTime.now().month &&
@@ -69,8 +70,27 @@ class Exercise {
           date.month == DateTime.now().month &&
           date.year == DateTime.now().year) {
         yesterdaysWorkout = workouts[date];
+      } else {
+        removal.add(date);
       }
     }
+    for (DateTime date in removal) {
+      workouts.remove(date);
+    }
+
+    dynamic sets = await Data.getUserField('WorkoutsSets');
+    dynamic exercisesPerSet =
+        await Data.getUserField('WorkoutsExercisesPerSet');
+    if (!(sets is int)) {
+      sets = 2;
+      await Data.setUserField('WorkoutsSets', 2);
+    }
+    if (!(exercisesPerSet is int)) {
+      exercisesPerSet = 2;
+      await Data.setUserField('WorkoutsExercisesPerSet', 2);
+    }
+    setsPerWorkout = sets;
+    exercisesPerSetPerWorkout = exercisesPerSet;
     if (todaysWorkout == null) {
       List<String> lowerBody = [
         'abductors',
@@ -93,20 +113,23 @@ class Exercise {
         'shoulders',
         'biceps'
       ];
+
       double intensity = 1;
       if (yesterdaysWorkout != null) {
-        if (yesterdaysWorkout.intensity >= 1.3) {
+        if (yesterdaysWorkout!.intensity >= 1.3) {
           intensity = 0.7;
         } else {
-          intensity = yesterdaysWorkout.intensity + 0.1;
+          intensity = yesterdaysWorkout!.intensity + 0.1;
         }
       }
       if (yesterdaysWorkout == null ||
           lowerBody.contains(
-              yesterdaysWorkout.sets[0].exercises[0].exercise.muscleGroup)) {
-        todaysWorkout = Workout.build(3, 3, intensity, upperBody);
+              yesterdaysWorkout!.sets[0].exercises[0].exercise.muscleGroup)) {
+        todaysWorkout =
+            Workout.build(sets, exercisesPerSet, intensity, upperBody);
       } else {
-        todaysWorkout = Workout.build(3, 3, intensity, lowerBody);
+        todaysWorkout =
+            Workout.build(sets, exercisesPerSet, intensity, lowerBody);
       }
       workouts[DateTime.now()] = todaysWorkout!;
       Map<String, String> data = {};
@@ -259,8 +282,11 @@ class Exercise {
     ));
   }
 
+  static int? setsPerWorkout;
+  static int? exercisesPerSetPerWorkout;
+
   static Workout? todaysWorkout;
-  static Map<DateTime, Workout> workouts = {};
+  static Workout? yesterdaysWorkout;
 
   static List<Exercise> exercises = [];
 

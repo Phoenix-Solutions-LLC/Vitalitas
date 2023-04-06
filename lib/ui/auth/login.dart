@@ -5,6 +5,7 @@ import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/auth/auth.dart';
 import 'package:vitalitas/ui/auth/register.dart';
+import 'package:vitalitas/ui/auth/reset.dart';
 import 'package:vitalitas/ui/auth/verify.dart';
 
 class LoginPage extends StatefulWidget {
@@ -237,16 +238,21 @@ class LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             submitButton(),
-            Container(
-              padding: EdgeInsets.symmetric(vertical: 10),
-              alignment: Alignment.centerRight,
-              child: Text('Forgot Password ?',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontFamily: 'Comfort',
-                      color: Vitalitas.theme.fg,
-                      fontWeight: FontWeight.w500)),
-            ),
+            InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ResetPage()));
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  alignment: Alignment.centerRight,
+                  child: Text('Forgot Password?',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontFamily: 'Comfort',
+                          color: Vitalitas.theme.fg,
+                          fontWeight: FontWeight.w500)),
+                )),
             divider(),
             googleButton(context: context),
             createAccountLabel(),

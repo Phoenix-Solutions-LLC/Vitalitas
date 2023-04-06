@@ -39,6 +39,19 @@ class Vitalitas extends StatelessWidget {
     }
     return MaterialApp(
       title: 'Vitalitas',
+      theme: ThemeData(
+          colorScheme: ColorScheme(
+              brightness: Brightness.light,
+              primary: Vitalitas.theme.fg,
+              onPrimary: Vitalitas.theme.fg,
+              secondary: Vitalitas.theme.acc,
+              onSecondary: Vitalitas.theme.acc,
+              error: Vitalitas.theme.acc,
+              onError: Vitalitas.theme.acc,
+              background: Vitalitas.theme.bg,
+              onBackground: Vitalitas.theme.bg,
+              surface: Colors.black12,
+              onSurface: Colors.black12)),
       home: page,
     );
   }

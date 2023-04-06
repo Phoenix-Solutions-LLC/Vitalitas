@@ -4,24 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/ui/auth/login.dart';
 
-class VerifyPage extends StatefulWidget {
+class ResetPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return VerifyPageState();
+    return ResetPageState();
   }
 }
 
-class VerifyPageState extends State<VerifyPage> {
-  bool verified = false;
-  Timer? verificationTimer;
-
-  Widget resendButton() {
+class ResetPageState extends State<ResetPage> {
+  TextEditingController controller = TextEditingController();
+  Widget sendButton() {
     return InkWell(
         onTap: () {
-          if (Authentification.currentUser != null) {
-            Authentification.currentUser!.sendEmailVerification();
-          }
+          Authentification.sendPasswordResetEmail(
+              email: controller.text.trim());
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
         },
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -42,43 +42,11 @@ class VerifyPageState extends State<VerifyPage> {
                   colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
                   stops: [0.1, 0.9])),
           child: Text(
-            'Resend Verification',
+            'Send Password Reset Email',
             style: TextStyle(
                 fontSize: 20, fontFamily: 'Comfort', color: Vitalitas.theme.bg),
           ),
         ));
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    if (Authentification.currentUser != null) {
-      verified = Authentification.currentUser!.emailVerified;
-      if (!verified) {
-        Authentification.currentUser!.sendEmailVerification();
-
-        verificationTimer = Timer.periodic(Duration(seconds: 3), (timer) async {
-          await Authentification.currentUser!.reload();
-
-          verified = Authentification.currentUser!.emailVerified;
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HomePage.load()));
-
-          if (verified) {
-            timer.cancel();
-          }
-        });
-      } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage.load()));
-      }
-    }
-  }
-
-  @override
-  void dispose() {
-    verificationTimer?.cancel();
-    super.dispose();
   }
 
   @override
@@ -100,7 +68,35 @@ class VerifyPageState extends State<VerifyPage> {
             SizedBox(
               height: 50,
             ),
-            resendButton()
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Email',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Comfort',
+                        fontSize: 15),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                      controller: controller,
+                      obscureText: false,
+                      cursorColor: Vitalitas.theme.fg,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          fillColor: Color(0xfff3f3f4),
+                          filled: true))
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            sendButton()
           ],
         )),
       ),

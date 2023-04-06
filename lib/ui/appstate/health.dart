@@ -1,16 +1,23 @@
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:google_nav_bar/src/gbutton.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:health/health.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/data.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
+import 'package:vitalitas/data/misc/survey.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:vitalitas/ui/appstate/home.dart';
 
 class HealthAppState extends AppState {
   static Future<void> load() async {
@@ -21,6 +28,30 @@ class HealthAppState extends AppState {
     }
     for (String key in res.keys) {
       healthScores[DateTime.parse(key)] = res[key];
+    }
+
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      HealthFactory health = HealthFactory();
+
+      var types = [
+        HealthDataType.SLEEP_ASLEEP,
+        HealthDataType.HEIGHT,
+        HealthDataType.WEIGHT,
+        HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
+        HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
+        HealthDataType.RESTING_HEART_RATE
+      ];
+
+      var permissions = [
+        HealthDataAccess.READ,
+        HealthDataAccess.READ,
+        HealthDataAccess.READ,
+        HealthDataAccess.READ,
+        HealthDataAccess.READ,
+        HealthDataAccess.READ
+      ];
+
+      await health.requestAuthorization(types, permissions: permissions);
     }
   }
 
@@ -39,6 +70,7 @@ class HealthAppState extends AppState {
     return nowScore;
   }
 
+  static Survey? openSurvey;
   @override
   Widget? getBody(State state) {
     double nowScore = getTodaysHealthScore();
@@ -67,6 +99,10 @@ class HealthAppState extends AppState {
         addedExercises.add(exercise);
       }
     });
+
+    if (openSurvey != null) {
+      return getSurveyWidget(state);
+    }
 
     return SingleChildScrollView(
       child: Column(
@@ -137,13 +173,20 @@ class HealthAppState extends AppState {
                           padding: EdgeInsets.all(30),
                           child: InkWell(
                             onTap: () {
-                              state.setState(() {
-                                healthScores[DateTime.now()] = 0.78;
-                                Map<String, double> data = {};
-                                for (DateTime date in healthScores.keys) {
-                                  data[date.toString()] = healthScores[date]!;
+                              // state.setState(() {
+                              //   healthScores[DateTime.now()] = 0.78;
+                              //   Map<String, double> data = {};
+                              //   for (DateTime date in healthScores.keys) {
+                              //     data[date.toString()] = healthScores[date]!;
+                              //   }
+                              //   Data.setUserField('HealthScores', data);
+                              // });
+                              Survey.build(state).then((survey) {
+                                if (survey.questions.length > 0) {
+                                  state.setState(() {
+                                    openSurvey = survey;
+                                  });
                                 }
-                                Data.setUserField('HealthScores', data);
                               });
                             },
                             child: Card(
@@ -217,9 +260,9 @@ class HealthAppState extends AppState {
                               color: Vitalitas.theme.txt)),
                       tooltipBehavior: TooltipBehavior(enable: true),
                       zoomPanBehavior: ZoomPanBehavior(
-                          enablePanning: true,
-                          enablePinching: true,
-                          enableMouseWheelZooming: true),
+                          enablePanning: false,
+                          enablePinching: false,
+                          enableMouseWheelZooming: false),
                       series: [
                         LineSeries<DateTime, DateTime>(
                             name: 'Health Score',
@@ -365,5 +408,124 @@ class HealthAppState extends AppState {
         )
       ],
     );
+  }
+
+  static Widget getSurveyWidget(State state) {
+    openSurvey!.onQuestionCompletion = () {
+      if (openSurvey!.currentIndex + 1 == openSurvey!.questions.length) {
+        healthScores[DateTime.now()] = openSurvey!.calculate();
+        Map<String, double> data = {};
+        for (DateTime date in healthScores.keys) {
+          data[date.toString()] = healthScores[date]!;
+        }
+        String feedback = openSurvey!.formulateResults();
+        HomeAppState.surveyFeedback = feedback;
+        Data.setUserField('SurveyFeedback', feedback).then((value) {
+          Data.setUserField('HealthScores', data).then((value) {
+            state.setState(() {
+              openSurvey = null;
+            });
+          });
+        });
+      } else {
+        state.setState(() {
+          openSurvey!.currentIndex = openSurvey!.currentIndex + 1;
+        });
+      }
+    };
+    Question currentQuestion = openSurvey!.questions[openSurvey!.currentIndex];
+    return SingleChildScrollView(
+        child: Container(
+      child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        SizedBox(
+          height: 20,
+        ),
+        InkWell(
+          onTap: () {
+            state.setState(() {
+              openSurvey = null;
+            });
+          },
+          child: Padding(
+              padding: EdgeInsets.only(left: 20),
+              child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Row(children: [
+                    Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      size: 20,
+                    ),
+                    DefaultTextStyle(
+                        style: TextStyle(
+                            fontFamily: 'Comfort',
+                            fontSize: 20,
+                            color: Vitalitas.theme.txt),
+                        child: Text(
+                          'Back',
+                          textAlign: TextAlign.center,
+                        ))
+                  ]))),
+        ),
+        SizedBox(
+          height: 50,
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: LinearPercentIndicator(
+            width: MediaQuery.of(state.context).size.width - 100,
+            animation: true,
+            animationDuration: 500,
+            lineHeight: 30,
+            barRadius: Radius.circular(30),
+            percent:
+                (openSurvey!.currentIndex + 1) / openSurvey!.questions.length,
+            backgroundColor: const Color.fromARGB(255, 221, 221, 221),
+            progressColor: Vitalitas.theme.fg,
+            center: Text(
+              (openSurvey!.currentIndex + 1).toString() +
+                  '/' +
+                  openSurvey!.questions.length.toString(),
+              style: TextStyle(
+                  fontFamily: 'Comfort',
+                  fontWeight: FontWeight.bold,
+                  color: Vitalitas.theme.txt,
+                  fontSize: 20),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 70,
+        ),
+        Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: Center(
+              child: Text(
+                currentQuestion.question,
+                style: TextStyle(
+                    fontFamily: 'Comfort',
+                    color: Vitalitas.theme.txt,
+                    fontSize: 30),
+              ),
+            )),
+        SizedBox(
+          height: 40,
+        ),
+        Theme(
+            data: ThemeData(
+                colorScheme: ColorScheme(
+                    brightness: Brightness.light,
+                    primary: Vitalitas.theme.fg,
+                    onPrimary: Vitalitas.theme.fg,
+                    secondary: Vitalitas.theme.acc,
+                    onSecondary: Vitalitas.theme.acc,
+                    error: Vitalitas.theme.acc,
+                    onError: Vitalitas.theme.acc,
+                    background: Vitalitas.theme.bg,
+                    onBackground: Vitalitas.theme.bg,
+                    surface: Vitalitas.theme.bg,
+                    onSurface: Vitalitas.theme.bg)),
+            child: currentQuestion.answerWidget(currentQuestion))
+      ]),
+    ));
   }
 }

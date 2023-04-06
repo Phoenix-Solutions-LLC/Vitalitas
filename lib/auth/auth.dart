@@ -19,6 +19,10 @@ class Authentification {
     await auth.createUserWithEmailAndPassword(email: email, password: password);
   }
 
+  static Future<void> sendPasswordResetEmail({required String email}) async {
+    await auth.sendPasswordResetEmail(email: email);
+  }
+
   static Future<void> signInWithGoogle({required BuildContext context}) async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -38,8 +42,7 @@ class Authentification {
     }
   }
 
-  static Future<void> signOut(
-      {required String email, required String password}) async {
+  static Future<void> signOut() async {
     await auth.signOut();
   }
 }

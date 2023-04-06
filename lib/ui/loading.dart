@@ -5,19 +5,32 @@ import 'package:vitalitas/breakpoint.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/widgets/animated_bot_screen.dart';
 
-class LoadingPage extends StatelessWidget {
-  Function? task;
+class LoadingPage extends StatefulWidget {
+  Future<Widget> Function() task;
 
-  LoadingPage({this.task});
+  LoadingPage({required this.task});
+
+  @override
+  State<StatefulWidget> createState() {
+    return LoadingPageState(task: task);
+  }
+}
+
+class LoadingPageState extends State<LoadingPage> {
+  Future<Widget> Function() task;
+
+  LoadingPageState({required this.task});
+
+  @override
+  void initState() {
+    super.initState();
+    task().then((p) {
+      Navigator.push(context, MaterialPageRoute(builder: (ctx) => p));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (task != null) {
-      task!().then((p) {
-        task = null;
-        Navigator.push(context, MaterialPageRoute(builder: (ctx) => p));
-      });
-    }
     var c = [
       Expanded(
         child: Center(
