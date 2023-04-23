@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "966765070451-11pge8nb6ug2aegfuheigd55su9tk39f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.patetlex.vitalitas",
+            "certificate_hash": "c26b3f7e6842b09904d4fba113c5dd67e5e8cc53"
+          }
+        },
+        {
           "client_id": "966765070451-bpbo681pps1c1h434aj4dnk8a2ft0krv.apps.googleusercontent.com",
           "client_type": 3
         }

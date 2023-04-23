@@ -12,9 +12,11 @@ import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/data/misc/quote.dart';
 import 'package:vitalitas/main.dart';
+import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class BotAppState extends AppState {
+class BotAppState extends VitalitasAppState {
   static Future<void> load() async {
     OpenAI.apiKey = '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';
     OpenAI.organization = 'org-4ZSecZhP5Y6b7mfXnmbU0hxE';
@@ -30,6 +32,10 @@ class BotAppState extends AppState {
       await Data.setUserField('MonthlyTokens', monthlyMaxTokens);
     }
     allowedTokens = monthlyTokens;
+
+    Monetization.loadNewInterstitial().future.then((ad) {
+      interstitialAd0 = ad;
+    });
   }
 
   static TextEditingController submitController = new TextEditingController();
@@ -38,6 +44,8 @@ class BotAppState extends AppState {
   static String time = 'nil';
   static List<Message> messages = [];
   static int allowedTokens = 0;
+
+  static InterstitialAd? interstitialAd0;
 
   @override
   Widget? getBody(State state) {
@@ -49,11 +57,19 @@ class BotAppState extends AppState {
       if (now.minute < 10) {
         minute = '0' + minute;
       }
-      if (hour > 11) {
+      if (hour == 12) {
+        time = (12).toString() + ':' + minute + ampm;
+      } else if (hour > 11) {
         time = (hour - 12).toString() + ':' + minute + ampm;
       } else {
         time = (hour + 1).toString() + ':' + minute + ampm;
       }
+    }
+
+    if (interstitialAd0 != null) {
+      interstitialAd0!.show().then((v) {
+        interstitialAd0 = null;
+      });
     }
 
     Map<String, dynamic> preface = {};
@@ -95,8 +111,10 @@ class BotAppState extends AppState {
 
     Function(String) submit = (text) {
       state.setState(() {
-        messages.add(Message(user: true, text: text));
-        messages.add(Message(user: false, text: '...'));
+        if (messages.isEmpty || messages[messages.length - 1].text != '...') {
+          messages.add(Message(user: true, text: text));
+          messages.add(Message(user: false, text: '...'));
+        }
       });
       Future(() async {
         if (allowedTokens > 0) {
@@ -144,7 +162,9 @@ class BotAppState extends AppState {
           style: TextStyle(
               fontFamily: 'Comfort', fontSize: 16, color: Vitalitas.theme.txt),
           child: Text(message.text));
-      if (i + 1 == messages.length && !message.user) {
+      if (i + 1 == messages.length &&
+          !message.user &&
+          !(message.finished ?? false)) {
         child = DefaultTextStyle(
             style: TextStyle(
                 fontFamily: 'Comfort',
@@ -154,6 +174,11 @@ class BotAppState extends AppState {
                 key: ValueKey(message.text),
                 repeatForever: message.text == '...',
                 totalRepeatCount: 1,
+                onFinished: message.text == '...'
+                    ? null
+                    : () {
+                        message.finished = true;
+                      },
                 animatedTexts: [
                   message.text == '...'
                       ? WavyAnimatedText(
@@ -299,6 +324,7 @@ class BotAppState extends AppState {
 
 class Message {
   bool user;
+  bool? finished;
   String text;
   Function onClick = () {};
 

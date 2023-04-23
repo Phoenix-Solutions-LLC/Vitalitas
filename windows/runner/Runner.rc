@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.patetlex" "\0"
-            VALUE "FileDescription", "vitalitas" "\0"
+            VALUE "FileDescription", "Vitalitas" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "vitalitas" "\0"
+            VALUE "InternalName", "Vitalitas" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.patetlex. All rights reserved." "\0"
             VALUE "OriginalFilename", "vitalitas.exe" "\0"
-            VALUE "ProductName", "vitalitas" "\0"
+            VALUE "ProductName", "Vitalitas" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

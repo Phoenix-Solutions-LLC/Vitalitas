@@ -206,7 +206,7 @@ class Exercise {
     });
     return Center(
         child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.only(left: 20, right: 20, top: 35),
       child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -411,7 +411,7 @@ class Exercise {
                   ]),
               child: Column(children: [
                 SizedBox(
-                  height: 15,
+                  height: 35,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

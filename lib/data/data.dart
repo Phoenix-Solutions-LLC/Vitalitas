@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/authentification/auth.dart';
 
 class Data {
   static final FirebaseFirestore store = FirebaseFirestore.instance;

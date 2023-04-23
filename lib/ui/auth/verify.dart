@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
-import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/authentification/auth.dart';
 
 class VerifyPage extends StatefulWidget {
   @override

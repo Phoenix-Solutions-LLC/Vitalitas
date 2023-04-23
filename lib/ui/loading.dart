@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:vitalitas/breakpoint.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/widgets/animated_bot_screen.dart';
@@ -24,8 +25,13 @@ class LoadingPageState extends State<LoadingPage> {
   @override
   void initState() {
     super.initState();
-    task().then((p) {
-      Navigator.push(context, MaterialPageRoute(builder: (ctx) => p));
+    call();
+  }
+
+  void call() async {
+    Widget widget = await task();
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      Navigator.push(context, MaterialPageRoute(builder: (ctx) => widget));
     });
   }
 

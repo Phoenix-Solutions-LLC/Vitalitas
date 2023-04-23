@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:like_button/like_button.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
@@ -11,7 +12,9 @@ import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/data/misc/quote.dart';
 import 'package:vitalitas/main.dart';
+import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/account.dart';
+import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:vitalitas/ui/appstate/bot.dart';
 import 'package:vitalitas/ui/appstate/health.dart';
@@ -20,6 +23,8 @@ import 'package:vitalitas/ui/loading.dart';
 import 'package:vitalitas/ui/widgets/clip/wave.dart';
 
 class HomePage extends StatefulWidget {
+  static List<VitalitasAppState> appStates = [];
+
   static StatefulWidget load() {
     return LoadingPage(
       task: () async {
@@ -31,10 +36,18 @@ class HomePage extends StatefulWidget {
         await BotAppState.load();
         await AccountAppState.load();
 
+        print('Finished Initial Building.');
+
         dynamic pS = await Data.getUserField('SurveyFeedback');
         if (pS is String) {
           HomeAppState.surveyFeedback = pS;
         }
+
+        appStates.add(HomeAppState());
+        appStates.add(HealthAppState());
+        appStates.add(HealthdexAppState());
+        appStates.add(AccountAppState());
+        appStates.add(BotAppState());
 
         return HomePage();
       },
@@ -47,8 +60,29 @@ class HomePage extends StatefulWidget {
   }
 }
 
-class HomeAppState extends AppState {
+class HomeAppState extends VitalitasAppState {
   static String? surveyFeedback;
+  static BannerAd? bannerAd0;
+  static BannerAd? bannerAd1;
+
+  @override
+  void changeDependencies() {
+    bannerAd0 = Monetization.loadNewBanner();
+    bannerAd1 = Monetization.loadNewBanner();
+  }
+
+  @override
+  void dispose() {
+    if (bannerAd0 != null) {
+      bannerAd0!.dispose();
+      bannerAd0 = null;
+    }
+    if (bannerAd1 != null) {
+      bannerAd1!.dispose();
+      bannerAd1 = null;
+    }
+  }
+
   @override
   Widget? getBody(State state) {
     Size screen = MediaQuery.of(state.context).size;
@@ -130,11 +164,12 @@ class HomeAppState extends AppState {
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
               child: Column(children: [
                 SizedBox(
-                  height: 25,
+                  height: 50,
                 ),
                 Padding(
                     padding: EdgeInsets.symmetric(horizontal: 100),
-                    child: Center(child: Image.asset('resources/logo.png'))),
+                    child: Center(
+                        child: Image.asset('assets/resources/logo.png'))),
                 SizedBox(
                   height: 40,
                 ),
@@ -167,6 +202,18 @@ class HomeAppState extends AppState {
                 ),
               ]),
             )),
+        (bannerAd0 != null
+            ? Center(
+                child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: SafeArea(
+                    child: SizedBox(
+                  width: bannerAd0!.size.width.toDouble(),
+                  height: bannerAd0!.size.height.toDouble(),
+                  child: AdWidget(ad: bannerAd0!),
+                )),
+              ))
+            : Container()),
         Padding(
             padding: EdgeInsets.all(35),
             child: Column(
@@ -252,6 +299,18 @@ class HomeAppState extends AppState {
                 )
               ],
             )),
+        (bannerAd1 != null
+            ? Center(
+                child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: SafeArea(
+                    child: SizedBox(
+                  width: bannerAd1!.size.width.toDouble(),
+                  height: bannerAd1!.size.height.toDouble(),
+                  child: AdWidget(ad: bannerAd1!),
+                )),
+              ))
+            : Container()),
         SizedBox(
           height: 50,
         ),
@@ -419,9 +478,10 @@ class HomeAppState extends AppState {
                   SizedBox(
                     width: 20,
                   ),
-                  Column(
+                  Expanded(
+                      child: Column(
                     children: exercises,
-                  )
+                  ))
                 ],
               )),
         ),
@@ -467,21 +527,31 @@ class HomeState extends State<HomePage> {
   static int _index = 0;
 
   @override
-  Widget build(BuildContext context) {
-    List<AppState> appStates = [];
-    appStates.add(HomeAppState());
-    appStates.add(HealthAppState());
-    appStates.add(HealthdexAppState());
-    appStates.add(AccountAppState());
-    appStates.add(BotAppState());
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    for (VitalitasAppState state in HomePage.appStates) {
+      state.changeDependencies();
+    }
+  }
 
+  @override
+  void dispose() {
+    for (VitalitasAppState state in HomePage.appStates) {
+      state.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  @override
+  Widget build(BuildContext context) {
     List<GButton> gButtons = [];
-    for (AppState state in appStates) {
+    for (VitalitasAppState state in HomePage.appStates) {
       gButtons.add(state.getNavButton());
     }
 
     return Scaffold(
-      body: appStates[_index].getBody(this),
+      body: HomePage.appStates[_index].getBody(this),
       bottomNavigationBar: Container(
           decoration: BoxDecoration(color: Vitalitas.theme.acc, boxShadow: [
             BoxShadow(blurRadius: 20, color: Colors.black.withOpacity(0.1))

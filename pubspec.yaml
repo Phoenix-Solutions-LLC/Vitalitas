@@ -1,5 +1,5 @@
 name: vitalitas
-description: A new Flutter project.
+description: Health app for diagnosis tracking, medical ChatBot, health games & quizzes, and other home medical insights.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -50,6 +50,10 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   dart_openai: ^1.8.4
   number_inc_dec: ^0.8.0
+  google_mobile_ads: ^2.4.0
+  adapty_flutter: ^2.4.1
+  flutter_launcher_icons: ^0.13.1
+  rename: ^2.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -69,6 +73,12 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
+flutter_icons:
+  image_path: "assets/resources/icon.png"
+  android: true
+  ios: true
+  remove_alpha_ios: true
+
 # The following section is specific to Flutter packages.
 flutter:
   fonts:
@@ -82,8 +92,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/resources/
-  #   - images/a_dot_ham.jpeg
+    - assets/resources/heart.png
+    - assets/resources/logo.png
+    - assets/resources/icon.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

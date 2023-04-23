@@ -114,7 +114,7 @@ class Condition {
     });
     return Center(
         child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.only(left: 20, right: 20, top: 35),
       child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -285,13 +285,19 @@ class Condition {
           onChanged: (b) {
             added = b;
             state.setState(() {
-              Data.getUserField('Conditions').then((value) {
-                if (b) {
-                  value.add(pocId);
+              Data.getUserField('Age').then((age) {
+                if (!(age is int) || age >= 18) {
+                  Data.getUserField('Conditions').then((value) {
+                    if (b) {
+                      value.add(pocId);
+                    } else {
+                      value.remove(pocId);
+                    }
+                    Data.setUserField('Conditions', value);
+                  });
                 } else {
-                  value.remove(pocId);
+                  Data.setUserField('Conditions', []);
                 }
-                Data.setUserField('Conditions', value);
               });
             });
           },
@@ -343,7 +349,7 @@ class Condition {
                   ]),
               child: Column(children: [
                 SizedBox(
-                  height: 15,
+                  height: 35,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

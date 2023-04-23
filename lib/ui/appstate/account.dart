@@ -13,11 +13,11 @@ import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/data.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
-import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/authentification/auth.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
 import 'package:vitalitas/ui/auth/reset.dart';
 
-class AccountAppState extends AppState {
+class AccountAppState extends VitalitasAppState {
   static Future<void> load() async {
     dynamic uName = await Data.getUserField('Username');
     if (!(uName is String)) {
@@ -411,6 +411,60 @@ class AccountAppState extends AppState {
         selectedBackgroundColor: Vitalitas.theme.fg,
         selectedTextColor: Vitalitas.theme.bg,
         borderColor: Vitalitas.theme.fg,
+      ),
+      SizedBox(
+        height: 10,
+      ),
+      AnimatedButton(
+        text: 'Delete Data',
+        textStyle: TextStyle(
+          fontFamily: 'Comfort',
+          color: Vitalitas.theme.txt,
+          fontSize: 20,
+        ),
+        onPress: () {
+          if (Authentification.currentUser != null) {
+            Data.currentUserDoc().then((doc) {
+              if (doc != null) {
+                doc.delete();
+              }
+            });
+            Navigator.push(state.context,
+                MaterialPageRoute(builder: (context) => LandingPage()));
+          }
+        },
+        animatedOn: AnimatedOn.onHover,
+        height: 50,
+        width: 150,
+        borderWidth: 4,
+        borderRadius: 25,
+        backgroundColor: Vitalitas.theme.acc,
+        selectedBackgroundColor: Vitalitas.theme.fg,
+        selectedTextColor: Vitalitas.theme.bg,
+        borderColor: Vitalitas.theme.fg,
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      Center(
+        child: Text(
+          'Contact:',
+          style: TextStyle(
+              fontFamily: 'Comfort',
+              fontSize: 25,
+              color: Vitalitas.theme.txt,
+              fontWeight: FontWeight.bold),
+        ),
+      ),
+      Center(
+        child: Text(
+          'support@patetlex.com',
+          style: TextStyle(
+              fontFamily: 'Comfort', fontSize: 15, color: Vitalitas.theme.txt),
+        ),
+      ),
+      SizedBox(
+        height: 20,
       )
       // SizedBox(
       //   height: 20,

@@ -2,13 +2,15 @@ import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:vitalitas/auth/auth.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:vitalitas/authentification/auth.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
+import 'package:adapty_flutter/adapty_flutter.dart';
 
 import 'firebase_options.dart';
 
@@ -19,6 +21,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  MobileAds.instance.initialize();
+  Adapty().activate();
   runApp(const Vitalitas());
 }
 

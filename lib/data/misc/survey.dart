@@ -61,88 +61,101 @@ class Survey {
         HealthDataType.WEIGHT,
         HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
         HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
-        HealthDataType.RESTING_HEART_RATE
+        HealthDataType.HEART_RATE
       ];
 
-      List<HealthDataPoint> data = await health.getHealthDataFromTypes(
-          DateTime(now.year, now.month, now.day - 1),
-          DateTime(now.year, now.month, now.day),
-          types);
+      bool? perms = await HealthFactory.hasPermissions(types);
+      if (perms ?? false) {
+        List<HealthDataPoint> data = await health.getHealthDataFromTypes(
+            DateTime(now.year, now.month, now.day - 1),
+            DateTime(now.year, now.month, now.day),
+            types);
 
-      num sysPressure = -1;
-      num diaPressure = -1;
-      num restingHeartRate = -1;
-      for (HealthDataPoint dataPoint in data) {
-        if (dataPoint.type == HealthDataType.SLEEP_ASLEEP) {
-          sleep = (dataPoint.value as NumericHealthValue).numericValue;
-        } else if (dataPoint.type == HealthDataType.HEIGHT) {
-          await Data.setUserField(
-              'Height', (dataPoint.value as NumericHealthValue).numericValue);
-        } else if (dataPoint.type == HealthDataType.WEIGHT) {
-          await Data.setUserField(
-              'Weight', (dataPoint.value as NumericHealthValue).numericValue);
-        } else if (dataPoint.type == HealthDataType.BLOOD_PRESSURE_SYSTOLIC) {
-          sysPressure = (dataPoint.value as NumericHealthValue).numericValue;
-        } else if (dataPoint.type == HealthDataType.BLOOD_PRESSURE_DIASTOLIC) {
-          diaPressure = (dataPoint.value as NumericHealthValue).numericValue;
-        } else if (dataPoint.type == HealthDataType.RESTING_HEART_RATE) {
-          restingHeartRate =
-              (dataPoint.value as NumericHealthValue).numericValue;
+        num sysPressure = -1;
+        num diaPressure = -1;
+        num heartRate = -1;
+        for (HealthDataPoint dataPoint in data) {
+          if (dataPoint.type == HealthDataType.SLEEP_ASLEEP) {
+            sleep = ((dataPoint.value as NumericHealthValue).numericValue) / 60;
+          } else if (dataPoint.type == HealthDataType.HEIGHT) {
+            await Data.setUserField(
+                'Height',
+                (((dataPoint.value as NumericHealthValue)
+                            .numericValue
+                            .toDouble()) *
+                        39.3700787)
+                    .round());
+          } else if (dataPoint.type == HealthDataType.WEIGHT) {
+            await Data.setUserField(
+                'Weight',
+                (((dataPoint.value as NumericHealthValue)
+                            .numericValue
+                            .toDouble()) *
+                        2.20462262)
+                    .round());
+          } else if (dataPoint.type == HealthDataType.BLOOD_PRESSURE_SYSTOLIC) {
+            sysPressure = (dataPoint.value as NumericHealthValue).numericValue;
+          } else if (dataPoint.type ==
+              HealthDataType.BLOOD_PRESSURE_DIASTOLIC) {
+            diaPressure = (dataPoint.value as NumericHealthValue).numericValue;
+          } else if (dataPoint.type == HealthDataType.HEART_RATE) {
+            heartRate = (dataPoint.value as NumericHealthValue).numericValue;
+          }
         }
-      }
-      if (sysPressure > 0 && diaPressure > 0) {
-        num regSys = sysPressure - 120;
-        num regDia = diaPressure - 80;
-        num totalD = 0;
+        if (sysPressure > 0 && diaPressure > 0) {
+          num regSys = sysPressure - 120;
+          num regDia = diaPressure - 80;
+          num totalD = 0;
 
-        if (regSys > 0 || regDia > 0) {
-          bool flag = false;
-          for (Condition condition in Condition.conditions) {
-            if (condition.pocId == 'CON-20373392') {
-              if (!condition.added) {
-                condition.added = true;
-                flag = true;
+          if (regSys > 0 || regDia > 0) {
+            bool flag = false;
+            for (Condition condition in Condition.conditions) {
+              if (condition.pocId == 'CON-20373392') {
+                if (!condition.added) {
+                  condition.added = true;
+                  flag = true;
+                }
+                break;
               }
-              break;
+            }
+            String pre = flag
+                ? 'High blood presssure has been added to your conditions.'
+                : 'Your high blood pressure has been prolonged. Watch for symptoms and contact a medical professional';
+            survey.addToFeedback(pre +
+                ' Try breathing exercises in the morning or a proper diet.');
+          }
+          if (regSys > 0) {
+            totalD += (regSys / 20);
+          }
+          if (regDia > 0) {
+            totalD += (regDia / 20);
+          }
+          totalD = totalD.clamp(0, 1);
+          num invV = 1 - totalD;
+
+          survey.submit(invV.toDouble(), 5);
+        }
+
+        if (heartRate > 0) {
+          num reqHr = heartRate - 60;
+          num totalD = 0;
+          if (reqHr > 0) {
+            totalD += (reqHr / 40);
+
+            if (reqHr < 20) {
+              survey.addToFeedback('Your resting heart rate is slightly high.');
+            } else if (reqHr < 40) {
+              survey.addToFeedback('Your resting heart rate is high.');
+            } else {
+              survey.addToFeedback(
+                  'Your resting heart rate is very high. Seek a doctor if you experience symptoms such as palpitations.');
             }
           }
-          String pre = flag
-              ? 'High blood presssure has been added to your conditions.'
-              : 'Your high blood pressure has been prolonged. Watch for symptoms and contact a medical professional';
-          survey.addToFeedback(pre +
-              ' Try breathing exercises in the morning or a proper diet.');
-        }
-        if (regSys > 0) {
-          totalD += (regSys / 20);
-        }
-        if (regDia > 0) {
-          totalD += (regDia / 20);
-        }
-        totalD = totalD.clamp(0, 1);
-        num invV = 1 - totalD;
+          totalD = totalD.clamp(0, 1);
+          num invV = 1 - totalD;
 
-        survey.submit(invV.toDouble(), 5);
-      }
-
-      if (restingHeartRate > 0) {
-        num reqHr = restingHeartRate - 60;
-        num totalD = 0;
-        if (reqHr > 0) {
-          totalD += (reqHr / 40);
-
-          if (reqHr < 20) {
-            survey.addToFeedback('Your resting heart rate is slightly high.');
-          } else if (reqHr < 40) {
-            survey.addToFeedback('Your resting heart rate is high.');
-          } else {
-            survey.addToFeedback(
-                'Your resting heart rate is very high. Seek a doctor if you experience symptoms such as palpitations.');
-          }
+          survey.submit(invV.toDouble(), 3);
         }
-        totalD = totalD.clamp(0, 1);
-        num invV = 1 - totalD;
-
-        survey.submit(invV.toDouble(), 3);
       }
     }
 
@@ -210,7 +223,7 @@ class Survey {
     }
 
     dynamic weight = await Data.getUserField('Weight');
-    if (!(age is int)) {
+    if (!(weight is int)) {
       possibleQuestions.add(Question(
           priority: 1,
           question: 'What is your weight (pounds)?',
@@ -271,7 +284,7 @@ class Survey {
     }
 
     dynamic height = await Data.getUserField('Height');
-    if (!(age is int)) {
+    if (!(height is int)) {
       possibleQuestions.add(Question(
           priority: 1,
           question: 'What is your height (inches)?',
@@ -486,240 +499,242 @@ class Survey {
       survey.submit(v, 7);
     }
 
-    for (Drug drug in Drug.drugs) {
-      if (drug.added) {
-        List<Widget> sideEffects = [];
-        for (String rarity in drug.symptoms.keys) {
-          sideEffects.add(SizedBox(
+    if (age >= 18) {
+      for (Drug drug in Drug.drugs) {
+        if (drug.added) {
+          List<Widget> sideEffects = [];
+          for (String rarity in drug.symptoms.keys) {
+            sideEffects.add(SizedBox(
+              height: 10,
+            ));
+            sideEffects.add(Text(
+              rarity.substring(0, 1).toUpperCase() + rarity.substring(1),
+              style: TextStyle(
+                  fontFamily: 'Comfort',
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Vitalitas.theme.txt),
+            ));
+            sideEffects.add(SizedBox(
+              height: 10,
+            ));
+            for (String sideEffect in drug.symptoms[rarity]) {
+              sideEffects.add(Text(
+                sideEffect,
+                style: TextStyle(
+                    fontFamily: 'Comfort',
+                    fontSize: 16,
+                    color: Vitalitas.theme.txt),
+              ));
+              sideEffects.add(SizedBox(
+                height: 5,
+              ));
+            }
+          }
+          possibleQuestions.add(Question(
+              priority: 3,
+              question:
+                  'Have you experienced any of the following side effects due to your listed prescription ' +
+                      drug.name.trim() +
+                      ' in the past 24 hours, submit severity from (none) 0-10 (unbearable)?',
+              answerWidget: (question) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            color: const Color.fromARGB(255, 221, 221, 221),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 20,
+                                  color: Colors.black.withOpacity(0.1))
+                            ]),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(children: sideEffects))),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 75),
+                        child: SfSlider(
+                          min: 0,
+                          max: 10,
+                          activeColor: Vitalitas.theme.fg,
+                          inactiveColor: Vitalitas.theme.acc,
+                          value: question.value ?? 5,
+                          interval: 1,
+                          showLabels: true,
+                          enableTooltip: true,
+                          stepSize: 1,
+                          minorTicksPerInterval: 0,
+                          onChanged: (value) {
+                            state.setState(() {
+                              question.value = value;
+                            });
+                          },
+                        )),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    AnimatedButton(
+                      text: 'Submit',
+                      textStyle: TextStyle(
+                        fontFamily: 'Comfort',
+                        color: Vitalitas.theme.txt,
+                        fontSize: 25,
+                      ),
+                      onPress: () {
+                        if (!(question.value is int)) {
+                          question.value = 5;
+                        }
+                        if (question.value > 7) {
+                          survey.addToFeedback('If side effects of ' +
+                              drug.name +
+                              ' persist, seek a medical professional for a change in medication.');
+                        } else if (question.value > 3) {
+                          survey.addToFeedback('If side effects of ' +
+                              drug.name +
+                              ' become uncomfortable, seek a medical professional for a change in medication.');
+                        }
+                        int pain = (question.value as int).clamp(0, 10);
+                        int reg = 10 - pain;
+                        double v = reg / 10;
+                        survey.submit(v, 10);
+                      },
+                      animatedOn: AnimatedOn.onHover,
+                      height: 50,
+                      width: 150,
+                      borderWidth: 4,
+                      borderRadius: 25,
+                      backgroundColor: Vitalitas.theme.acc,
+                      selectedBackgroundColor: Vitalitas.theme.fg,
+                      selectedTextColor: Vitalitas.theme.bg,
+                      borderColor: Vitalitas.theme.fg,
+                    )
+                  ],
+                );
+              }));
+        }
+      }
+      for (Condition condition in Condition.conditions) {
+        if (condition.added) {
+          List<Widget> symptoms = [];
+          symptoms.add(SizedBox(
             height: 10,
           ));
-          sideEffects.add(Text(
-            rarity.substring(0, 1).toUpperCase() + rarity.substring(1),
+          symptoms.add(Text(
+            'Symptoms',
             style: TextStyle(
                 fontFamily: 'Comfort',
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Vitalitas.theme.txt),
           ));
-          sideEffects.add(SizedBox(
-            height: 10,
-          ));
-          for (String sideEffect in drug.symptoms[rarity]) {
-            sideEffects.add(Text(
-              sideEffect,
+          for (String symptom in condition.symptoms) {
+            symptoms.add(Text(
+              symptom,
               style: TextStyle(
                   fontFamily: 'Comfort',
                   fontSize: 16,
                   color: Vitalitas.theme.txt),
             ));
-            sideEffects.add(SizedBox(
+            symptoms.add(SizedBox(
               height: 5,
             ));
           }
-        }
-        possibleQuestions.add(Question(
-            priority: 3,
-            question:
-                'Have you experienced any of the following side effects due to your listed prescription ' +
-                    drug.name.trim() +
-                    ' in the past 24 hours, submit severity from (none) 0-10 (unbearable)?',
-            answerWidget: (question) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                          color: const Color.fromARGB(255, 221, 221, 221),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 20,
-                                color: Colors.black.withOpacity(0.1))
-                          ]),
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(children: sideEffects))),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 75),
-                      child: SfSlider(
-                        min: 0,
-                        max: 10,
-                        activeColor: Vitalitas.theme.fg,
-                        inactiveColor: Vitalitas.theme.acc,
-                        value: question.value ?? 5,
-                        interval: 1,
-                        showLabels: true,
-                        enableTooltip: true,
-                        stepSize: 1,
-                        minorTicksPerInterval: 0,
-                        onChanged: (value) {
-                          state.setState(() {
-                            question.value = value;
-                          });
-                        },
-                      )),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  AnimatedButton(
-                    text: 'Submit',
-                    textStyle: TextStyle(
-                      fontFamily: 'Comfort',
-                      color: Vitalitas.theme.txt,
-                      fontSize: 25,
+          possibleQuestions.add(Question(
+              priority: 3,
+              question:
+                  'Have you experienced any of the following symptoms due to your listed condition ' +
+                      condition.name.trim() +
+                      ' in the past 24 hours, submit severity from (none) 0-10 (unbearable)?',
+              answerWidget: (question) {
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: 50,
                     ),
-                    onPress: () {
-                      if (!(question.value is int)) {
-                        question.value = 5;
-                      }
-                      if (question.value > 7) {
-                        survey.addToFeedback('If side effects of ' +
-                            drug.name +
-                            ' persist, seek a medical professional for a change in medication.');
-                      } else if (question.value > 3) {
-                        survey.addToFeedback('If side effects of ' +
-                            drug.name +
-                            ' become uncomfortable, seek a medical professional for a change in medication.');
-                      }
-                      int pain = (question.value as int).clamp(0, 10);
-                      int reg = 10 - pain;
-                      double v = reg / 10;
-                      survey.submit(v, 10);
-                    },
-                    animatedOn: AnimatedOn.onHover,
-                    height: 50,
-                    width: 150,
-                    borderWidth: 4,
-                    borderRadius: 25,
-                    backgroundColor: Vitalitas.theme.acc,
-                    selectedBackgroundColor: Vitalitas.theme.fg,
-                    selectedTextColor: Vitalitas.theme.bg,
-                    borderColor: Vitalitas.theme.fg,
-                  )
-                ],
-              );
-            }));
-      }
-    }
-    for (Condition condition in Condition.conditions) {
-      if (condition.added) {
-        List<Widget> symptoms = [];
-        symptoms.add(SizedBox(
-          height: 10,
-        ));
-        symptoms.add(Text(
-          'Symptoms',
-          style: TextStyle(
-              fontFamily: 'Comfort',
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Vitalitas.theme.txt),
-        ));
-        for (String symptom in condition.symptoms) {
-          symptoms.add(Text(
-            symptom,
-            style: TextStyle(
-                fontFamily: 'Comfort',
-                fontSize: 16,
-                color: Vitalitas.theme.txt),
-          ));
-          symptoms.add(SizedBox(
-            height: 5,
-          ));
-        }
-        possibleQuestions.add(Question(
-            priority: 3,
-            question:
-                'Have you experienced any of the following symptoms due to your listed condition ' +
-                    condition.name.trim() +
-                    ' in the past 24 hours, submit severity from (none) 0-10 (unbearable)?',
-            answerWidget: (question) {
-              return Column(
-                children: [
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(40)),
-                          color: const Color.fromARGB(255, 221, 221, 221),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 20,
-                                color: Colors.black.withOpacity(0.1))
-                          ]),
-                      child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(children: symptoms))),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 75),
-                      child: SfSlider(
-                        min: 0,
-                        max: 10,
-                        activeColor: Vitalitas.theme.fg,
-                        inactiveColor: Vitalitas.theme.acc,
-                        value: question.value ?? 5,
-                        interval: 1,
-                        showLabels: true,
-                        enableTooltip: true,
-                        stepSize: 1,
-                        minorTicksPerInterval: 0,
-                        onChanged: (value) {
-                          state.setState(() {
-                            question.value = value;
-                          });
-                        },
-                      )),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  AnimatedButton(
-                    text: 'Submit',
-                    textStyle: TextStyle(
-                      fontFamily: 'Comfort',
-                      color: Vitalitas.theme.txt,
-                      fontSize: 25,
+                    Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(40)),
+                            color: const Color.fromARGB(255, 221, 221, 221),
+                            boxShadow: [
+                              BoxShadow(
+                                  blurRadius: 20,
+                                  color: Colors.black.withOpacity(0.1))
+                            ]),
+                        child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(children: symptoms))),
+                    SizedBox(
+                      height: 50,
                     ),
-                    onPress: () {
-                      if (!(question.value is int)) {
-                        question.value = 5;
-                      }
-                      if (question.value > 7) {
-                        survey.addToFeedback(
-                            'Seek a medical professional for a change in your treatment plan for ' +
-                                condition.name +
-                                '.');
-                      } else if (question.value > 3) {
-                        survey.addToFeedback('If symptoms of ' +
-                            condition.name +
-                            ' increase, seek a medical professional for advice');
-                      }
-                      int pain = (question.value as int).clamp(0, 10);
-                      int reg = 10 - pain;
-                      double v = reg / 10;
-                      survey.submit(v, 10);
-                    },
-                    animatedOn: AnimatedOn.onHover,
-                    height: 50,
-                    width: 150,
-                    borderWidth: 4,
-                    borderRadius: 25,
-                    backgroundColor: Vitalitas.theme.acc,
-                    selectedBackgroundColor: Vitalitas.theme.fg,
-                    selectedTextColor: Vitalitas.theme.bg,
-                    borderColor: Vitalitas.theme.fg,
-                  )
-                ],
-              );
-            }));
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 75),
+                        child: SfSlider(
+                          min: 0,
+                          max: 10,
+                          activeColor: Vitalitas.theme.fg,
+                          inactiveColor: Vitalitas.theme.acc,
+                          value: question.value ?? 5,
+                          interval: 1,
+                          showLabels: true,
+                          enableTooltip: true,
+                          stepSize: 1,
+                          minorTicksPerInterval: 0,
+                          onChanged: (value) {
+                            state.setState(() {
+                              question.value = value;
+                            });
+                          },
+                        )),
+                    SizedBox(
+                      height: 40,
+                    ),
+                    AnimatedButton(
+                      text: 'Submit',
+                      textStyle: TextStyle(
+                        fontFamily: 'Comfort',
+                        color: Vitalitas.theme.txt,
+                        fontSize: 25,
+                      ),
+                      onPress: () {
+                        if (!(question.value is int)) {
+                          question.value = 5;
+                        }
+                        if (question.value > 7) {
+                          survey.addToFeedback(
+                              'Seek a medical professional for a change in your treatment plan for ' +
+                                  condition.name +
+                                  '.');
+                        } else if (question.value > 3) {
+                          survey.addToFeedback('If symptoms of ' +
+                              condition.name +
+                              ' increase, seek a medical professional for advice');
+                        }
+                        int pain = (question.value as int).clamp(0, 10);
+                        int reg = 10 - pain;
+                        double v = reg / 10;
+                        survey.submit(v, 10);
+                      },
+                      animatedOn: AnimatedOn.onHover,
+                      height: 50,
+                      width: 150,
+                      borderWidth: 4,
+                      borderRadius: 25,
+                      backgroundColor: Vitalitas.theme.acc,
+                      selectedBackgroundColor: Vitalitas.theme.fg,
+                      selectedTextColor: Vitalitas.theme.bg,
+                      borderColor: Vitalitas.theme.fg,
+                    )
+                  ],
+                );
+              }));
+        }
       }
     }
 

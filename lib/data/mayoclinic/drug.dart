@@ -108,7 +108,7 @@ class Drug {
     });
     return Center(
         child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.only(left: 20, right: 20, top: 35),
       child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -247,13 +247,19 @@ class Drug {
           onChanged: (b) {
             added = b;
             state.setState(() {
-              Data.getUserField('Drugs').then((value) {
-                if (b) {
-                  value.add(pocId);
+              Data.getUserField('Age').then((age) {
+                if (!(age is int) || age >= 18) {
+                  Data.getUserField('Drugs').then((value) {
+                    if (b) {
+                      value.add(pocId);
+                    } else {
+                      value.remove(pocId);
+                    }
+                    Data.setUserField('Drugs', value);
+                  });
                 } else {
-                  value.remove(pocId);
+                  Data.setUserField('Drugs', []);
                 }
-                Data.setUserField('Drugs', value);
               });
             });
           },
@@ -305,7 +311,7 @@ class Drug {
                   ]),
               child: Column(children: [
                 SizedBox(
-                  height: 15,
+                  height: 35,
                 ),
                 Align(
                   alignment: Alignment.centerLeft,

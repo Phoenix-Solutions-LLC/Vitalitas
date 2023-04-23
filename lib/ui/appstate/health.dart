@@ -15,11 +15,13 @@ import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/data/misc/survey.dart';
 import 'package:vitalitas/main.dart';
+import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:vitalitas/ui/appstate/home.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class HealthAppState extends AppState {
+class HealthAppState extends VitalitasAppState {
   static Future<void> load() async {
     dynamic res = await Data.getUserField('HealthScores');
     if (res == null) {
@@ -39,7 +41,7 @@ class HealthAppState extends AppState {
         HealthDataType.WEIGHT,
         HealthDataType.BLOOD_PRESSURE_SYSTOLIC,
         HealthDataType.BLOOD_PRESSURE_DIASTOLIC,
-        HealthDataType.RESTING_HEART_RATE
+        HealthDataType.HEART_RATE
       ];
 
       var permissions = [
@@ -51,7 +53,14 @@ class HealthAppState extends AppState {
         HealthDataAccess.READ
       ];
 
-      await health.requestAuthorization(types, permissions: permissions);
+      bool success =
+          await health.requestAuthorization(types, permissions: permissions);
+
+      print('Requested Health Authorization - ' + success.toString() + '.');
+
+      Monetization.loadNewInterstitial().future.then((ad) {
+        interstitialAd0 = ad;
+      });
     }
   }
 
@@ -69,6 +78,8 @@ class HealthAppState extends AppState {
     }
     return nowScore;
   }
+
+  static InterstitialAd? interstitialAd0;
 
   static Survey? openSurvey;
   @override
@@ -181,6 +192,16 @@ class HealthAppState extends AppState {
                               //   }
                               //   Data.setUserField('HealthScores', data);
                               // });
+                              if (interstitialAd0 != null) {
+                                interstitialAd0!.show().then((v) {
+                                  interstitialAd0 = null;
+                                  Monetization.loadNewInterstitial()
+                                      .future
+                                      .then((ad) {
+                                    interstitialAd0 = ad;
+                                  });
+                                });
+                              }
                               Survey.build(state).then((survey) {
                                 if (survey.questions.length > 0) {
                                   state.setState(() {
@@ -203,7 +224,7 @@ class HealthAppState extends AppState {
                                           MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
-                                          'resources/heart.png',
+                                          'assets/resources/heart.png',
                                           width: 30,
                                           height: 30,
                                         ),

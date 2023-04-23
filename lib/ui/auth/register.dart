@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitalitas/main.dart';
-import 'package:vitalitas/auth/auth.dart';
+import 'package:vitalitas/authentification/auth.dart';
 import 'package:vitalitas/ui/auth/login.dart';
 import 'package:vitalitas/ui/auth/verify.dart';
 

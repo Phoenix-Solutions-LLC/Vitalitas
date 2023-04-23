@@ -9,7 +9,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.834175226283-ss43mlf3fremeg6jtiucha167go3seea</string>
+				<string>com.googleusercontent.apps.966765070451-5vpltadtciboa93sb6ldm7sqk98188k3</string>
 			</array>
 		</dict>
 	</array>
@@ -28,7 +28,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>vitalitas</string>
+	<string>Vitalitas</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -43,6 +43,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-5950336596467657~8283392467</string>
+	<key>AdaptyPublicSdkKey</key>
+    <string>public_live_I3tU9OfE.dSsj8zuMiYyH3IGg9CFq</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
