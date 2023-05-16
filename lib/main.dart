@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
 import 'package:adapty_flutter/adapty_flutter.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'firebase_options.dart';
 
@@ -21,8 +23,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  MobileAds.instance.initialize();
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    MobileAds.instance.initialize();
+  }
   Adapty().activate();
+  Adapty().setLogLevel(AdaptyLogLevel.verbose);
   runApp(const Vitalitas());
 }
 
@@ -39,21 +44,22 @@ class Vitalitas extends StatelessWidget {
     Widget page = LandingPage();
     if (Authentification.currentUser != null &&
         Authentification.currentUser!.emailVerified) {
-      page = HomePage.load();
+      page = HomePage();
     }
     return MaterialApp(
       title: 'Vitalitas',
       theme: ThemeData(
+          fontFamily: 'Comfort',
           colorScheme: ColorScheme(
               brightness: Brightness.light,
-              primary: Vitalitas.theme.fg,
-              onPrimary: Vitalitas.theme.fg,
-              secondary: Vitalitas.theme.acc,
-              onSecondary: Vitalitas.theme.acc,
-              error: Vitalitas.theme.acc,
-              onError: Vitalitas.theme.acc,
-              background: Vitalitas.theme.bg,
-              onBackground: Vitalitas.theme.bg,
+              primary: Vitalitas.theme.fg!,
+              onPrimary: Vitalitas.theme.fg!,
+              secondary: Vitalitas.theme.acc!,
+              onSecondary: Vitalitas.theme.acc!,
+              error: Vitalitas.theme.acc!,
+              onError: Vitalitas.theme.acc!,
+              background: Vitalitas.theme.bg!,
+              onBackground: Vitalitas.theme.bg!,
               surface: Colors.black12,
               onSurface: Colors.black12)),
       home: page,
@@ -62,8 +68,8 @@ class Vitalitas extends StatelessWidget {
 }
 
 class AppTheme {
-  var bg;
-  var fg;
-  var acc;
-  var txt;
+  Color? bg;
+  Color? fg;
+  Color? acc;
+  Color? txt;
 }

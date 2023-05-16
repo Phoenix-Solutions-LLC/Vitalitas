@@ -7,34 +7,13 @@ import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/widgets/animated_bot_screen.dart';
 
 class LoadingPage extends StatefulWidget {
-  Future<Widget> Function() task;
-
-  LoadingPage({required this.task});
-
   @override
   State<StatefulWidget> createState() {
-    return LoadingPageState(task: task);
+    return LoadingPageState();
   }
 }
 
 class LoadingPageState extends State<LoadingPage> {
-  Future<Widget> Function() task;
-
-  LoadingPageState({required this.task});
-
-  @override
-  void initState() {
-    super.initState();
-    call();
-  }
-
-  void call() async {
-    Widget widget = await task();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-      Navigator.push(context, MaterialPageRoute(builder: (ctx) => widget));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var c = [
@@ -63,7 +42,7 @@ class LoadingPageState extends State<LoadingPage> {
         body: Container(
             decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                    colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     stops: [0.1, 0.9])),

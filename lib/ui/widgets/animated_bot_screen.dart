@@ -59,7 +59,7 @@ class AnimatedBotState extends State<AnimatedBotScreen> {
                 width: const Size.fromHeight(60).width,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: Vitalitas.theme.acc, width: 5)),
+                    border: Border.all(color: Vitalitas.theme.acc!, width: 5)),
                 child: Center(
                     child: DefaultTextStyle(
                         style: TextStyle(

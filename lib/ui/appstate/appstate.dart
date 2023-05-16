@@ -7,4 +7,5 @@ abstract class VitalitasAppState {
 
   void dispose() {}
   void changeDependencies() {}
+  void initState() {}
 }

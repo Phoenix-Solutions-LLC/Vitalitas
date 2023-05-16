@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -25,34 +26,40 @@ import 'package:vitalitas/ui/widgets/clip/wave.dart';
 class HomePage extends StatefulWidget {
   static List<VitalitasAppState> appStates = [];
 
-  static StatefulWidget load() {
-    return LoadingPage(
-      task: () async {
-        await Condition.load();
-        await Drug.load();
-        await Exercise.load();
-        await Quote.load();
-        await HealthAppState.load();
-        await BotAppState.load();
-        await AccountAppState.load();
+  // static StatefulWidget load() {
+  //   return LoadingPage(
+  //     task: () async {
+  //       if (!HomeAppState.built) {
+  //         HomeAppState.built = true;
 
-        print('Finished Initial Building.');
+  //         await Condition.load();
+  //         await Drug.load();
+  //         await Exercise.load();
+  //         await Quote.load();
+  //         await HealthAppState.load();
+  //         await BotAppState.load();
+  //         await AccountAppState.load();
 
-        dynamic pS = await Data.getUserField('SurveyFeedback');
-        if (pS is String) {
-          HomeAppState.surveyFeedback = pS;
-        }
+  //         HomeAppState.profile = await Adapty().getProfile();
 
-        appStates.add(HomeAppState());
-        appStates.add(HealthAppState());
-        appStates.add(HealthdexAppState());
-        appStates.add(AccountAppState());
-        appStates.add(BotAppState());
+  //         print('Finished Initial Building.');
 
-        return HomePage();
-      },
-    );
-  }
+  //         dynamic pS = await Data.getUserField('SurveyFeedback');
+  //         if (pS is String) {
+  //           HomeAppState.surveyFeedback = pS;
+  //         }
+
+  //         appStates.add(HomeAppState());
+  //         appStates.add(HealthAppState());
+  //         appStates.add(HealthdexAppState());
+  //         appStates.add(AccountAppState());
+  //         appStates.add(BotAppState());
+  //       }
+
+  //       return HomePage();
+  //     },
+  //   );
+  // }
 
   @override
   State<StatefulWidget> createState() {
@@ -61,14 +68,31 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeAppState extends VitalitasAppState {
+  static bool built = false;
+  static AdaptyProfile? profile;
+  static bool bypassIntendedObstacles = false;
+
   static String? surveyFeedback;
   static BannerAd? bannerAd0;
   static BannerAd? bannerAd1;
+  static InterstitialAd? interstitialAd0;
+
+  static void load() {
+    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+        false || HomeAppState.bypassIntendedObstacles)) {
+      Monetization.loadNewInterstitial().future.then((ad) {
+        interstitialAd0 = ad;
+      });
+    }
+  }
 
   @override
   void changeDependencies() {
-    bannerAd0 = Monetization.loadNewBanner();
-    bannerAd1 = Monetization.loadNewBanner();
+    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+        false || HomeAppState.bypassIntendedObstacles)) {
+      bannerAd0 = Monetization.loadNewBanner();
+      bannerAd1 = Monetization.loadNewBanner();
+    }
   }
 
   @override
@@ -155,10 +179,10 @@ class HomeAppState extends VitalitasAppState {
                         blurRadius: 20, color: Colors.black.withOpacity(0.1))
                   ],
                   gradient: LinearGradient(colors: [
-                    Vitalitas.theme.acc,
-                    HSLColor.fromColor(Vitalitas.theme.acc)
+                    Vitalitas.theme.acc!,
+                    HSLColor.fromColor(Vitalitas.theme.acc!)
                         .withLightness(
-                            HSLColor.fromColor(Vitalitas.theme.acc).lightness *
+                            HSLColor.fromColor(Vitalitas.theme.acc!).lightness *
                                 brightness)
                         .toColor()
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight)),
@@ -182,7 +206,7 @@ class HomeAppState extends VitalitasAppState {
                               fontFamily: 'Comfort',
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
-                              color: HSLColor.fromColor(Vitalitas.theme.acc)
+                              color: HSLColor.fromColor(Vitalitas.theme.acc!)
                                   .withLightness(0.97)
                                   .toColor()),
                           child: AnimatedTextKit(
@@ -324,8 +348,9 @@ class HomeAppState extends VitalitasAppState {
     return GButton(
         icon: Icons.home_outlined,
         text: 'Home',
-        iconActiveColor:
-            HSLColor.fromColor(Vitalitas.theme.fg).withLightness(0.2).toColor(),
+        iconActiveColor: HSLColor.fromColor(Vitalitas.theme.fg!)
+            .withLightness(0.2)
+            .toColor(),
         backgroundColor: Vitalitas.theme.fg,
         iconColor: Vitalitas.theme.bg);
   }
@@ -394,8 +419,8 @@ class HomeAppState extends VitalitasAppState {
             gradient: LinearGradient(colors: [
               (set.exercises[0].exercise.exerciseType == 'cardio' ||
                       set.exercises[0].exercise.exerciseType == 'stretching')
-                  ? Vitalitas.theme.fg
-                  : Vitalitas.theme.acc,
+                  ? Vitalitas.theme.fg!
+                  : Vitalitas.theme.acc!,
               set.complete ? Colors.grey.shade400 : Colors.white
             ], stops: [
               0.07,
@@ -469,6 +494,16 @@ class HomeAppState extends VitalitasAppState {
                           state.setState(() {
                             set.complete = !isLiked;
                           });
+                          if (interstitialAd0 != null) {
+                            interstitialAd0!.show().then((v) {
+                              interstitialAd0 = null;
+                              Monetization.loadNewInterstitial()
+                                  .future
+                                  .then((ad) {
+                                interstitialAd0 = ad;
+                              });
+                            });
+                          }
                           Workout.update();
                           return !isLiked;
                         },
@@ -525,13 +560,70 @@ class HomeAppState extends VitalitasAppState {
 
 class HomeState extends State<HomePage> {
   static int _index = 0;
+  static bool? loading;
+
+  @override
+  void initState() {
+    super.initState();
+    HomePage.appStates.add(HomeAppState());
+    HomePage.appStates.add(HealthAppState());
+    HomePage.appStates.add(HealthdexAppState());
+    HomePage.appStates.add(AccountAppState());
+    HomePage.appStates.add(BotAppState());
+    () async {
+      setState(() {
+        loading = true;
+      });
+
+      if (!HomeAppState.built) {
+        HomeAppState.built = true;
+
+        if (HomeAppState.profile == null) {
+          HomeAppState.profile = await Adapty().getProfile();
+          dynamic prem = await Data.getUserField('Premium');
+          if (prem != null && prem is bool) {
+            HomeAppState.bypassIntendedObstacles = prem;
+          }
+        }
+
+        await Condition.load();
+        await Drug.load();
+        await Exercise.load();
+        await Quote.load();
+        await HealthAppState.load();
+        await BotAppState.load();
+        await AccountAppState.load();
+        HomeAppState.load();
+
+        print('Finished Initial Building.');
+
+        dynamic pS = await Data.getUserField('SurveyFeedback');
+        if (pS is String) {
+          HomeAppState.surveyFeedback = pS;
+        }
+      }
+
+      setState(() {
+        loading = false;
+      });
+    }();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    for (VitalitasAppState state in HomePage.appStates) {
-      state.changeDependencies();
-    }
+    () async {
+      if (HomeAppState.profile == null) {
+        HomeAppState.profile = await Adapty().getProfile();
+        dynamic prem = await Data.getUserField('Premium');
+        if (prem != null && prem is bool) {
+          HomeAppState.bypassIntendedObstacles = prem;
+        }
+      }
+      for (VitalitasAppState state in HomePage.appStates) {
+        state.changeDependencies();
+      }
+    }();
   }
 
   @override
@@ -545,6 +637,10 @@ class HomeState extends State<HomePage> {
   @override
   @override
   Widget build(BuildContext context) {
+    if (loading ?? true) {
+      return LoadingPage();
+    }
+
     List<GButton> gButtons = [];
     for (VitalitasAppState state in HomePage.appStates) {
       gButtons.add(state.getNavButton());
@@ -566,9 +662,9 @@ class HomeState extends State<HomePage> {
                     iconSize: 24,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     selectedIndex: _index,
-                    rippleColor: Vitalitas.theme.acc,
-                    hoverColor: Vitalitas.theme.acc,
-                    tabBackgroundColor: Vitalitas.theme.acc,
+                    rippleColor: Vitalitas.theme.acc!,
+                    hoverColor: Vitalitas.theme.acc!,
+                    tabBackgroundColor: Vitalitas.theme.acc!,
                     padding: EdgeInsets.all(16),
                     tabs: gButtons,
                     onTabChange: (index) {

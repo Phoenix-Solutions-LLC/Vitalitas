@@ -200,11 +200,11 @@ class Survey {
                     fontSize: 25,
                   ),
                   onPress: () {
-                    if (!(question.value is int)) {
+                    if (!(question.value is num)) {
                       question.value = 18;
                     }
                     Data.setUserField(
-                        'Age', (question.value as int).clamp(1, 100));
+                        'Age', ((question.value as num).toInt()).clamp(1, 100));
                     survey.submit(0, 0);
                   },
                   animatedOn: AnimatedOn.onHover,
@@ -212,10 +212,10 @@ class Survey {
                   width: 150,
                   borderWidth: 4,
                   borderRadius: 25,
-                  backgroundColor: Vitalitas.theme.acc,
-                  selectedBackgroundColor: Vitalitas.theme.fg,
-                  selectedTextColor: Vitalitas.theme.bg,
-                  borderColor: Vitalitas.theme.fg,
+                  backgroundColor: Vitalitas.theme.acc!,
+                  selectedBackgroundColor: Vitalitas.theme.fg!,
+                  selectedTextColor: Vitalitas.theme.bg!,
+                  borderColor: Vitalitas.theme.fg!,
                 )
               ],
             );
@@ -261,11 +261,11 @@ class Survey {
                     fontSize: 25,
                   ),
                   onPress: () {
-                    if (!(question.value is int)) {
+                    if (!(question.value is num)) {
                       question.value = 150;
                     }
-                    Data.setUserField(
-                        'Weight', (question.value as int).clamp(1, 100));
+                    Data.setUserField('Weight',
+                        ((question.value as num).toInt()).clamp(50, 350));
                     survey.submit(0, 0);
                   },
                   animatedOn: AnimatedOn.onHover,
@@ -273,10 +273,10 @@ class Survey {
                   width: 150,
                   borderWidth: 4,
                   borderRadius: 25,
-                  backgroundColor: Vitalitas.theme.acc,
-                  selectedBackgroundColor: Vitalitas.theme.fg,
-                  selectedTextColor: Vitalitas.theme.bg,
-                  borderColor: Vitalitas.theme.fg,
+                  backgroundColor: Vitalitas.theme.acc!,
+                  selectedBackgroundColor: Vitalitas.theme.fg!,
+                  selectedTextColor: Vitalitas.theme.bg!,
+                  borderColor: Vitalitas.theme.fg!,
                 )
               ],
             );
@@ -322,11 +322,11 @@ class Survey {
                     fontSize: 25,
                   ),
                   onPress: () {
-                    if (!(question.value is int)) {
+                    if (!(question.value is num)) {
                       question.value = 72;
                     }
-                    Data.setUserField(
-                        'Height', (question.value as int).clamp(1, 100));
+                    Data.setUserField('Height',
+                        ((question.value as num).toInt()).clamp(1, 100));
                     survey.submit(0, 0);
                   },
                   animatedOn: AnimatedOn.onHover,
@@ -334,10 +334,10 @@ class Survey {
                   width: 150,
                   borderWidth: 4,
                   borderRadius: 25,
-                  backgroundColor: Vitalitas.theme.acc,
-                  selectedBackgroundColor: Vitalitas.theme.fg,
-                  selectedTextColor: Vitalitas.theme.bg,
-                  borderColor: Vitalitas.theme.fg,
+                  backgroundColor: Vitalitas.theme.acc!,
+                  selectedBackgroundColor: Vitalitas.theme.fg!,
+                  selectedTextColor: Vitalitas.theme.bg!,
+                  borderColor: Vitalitas.theme.fg!,
                 )
               ],
             );
@@ -381,10 +381,10 @@ class Survey {
                   fontSize: 25,
                 ),
                 onPress: () {
-                  if (!(question.value is int)) {
+                  if (!(question.value is num)) {
                     question.value = 5;
                   }
-                  int hap = (question.value as int).clamp(0, 10);
+                  int hap = ((question.value as num).toInt()).clamp(0, 10);
                   double v = (1 / 26.66) * pow(hap - 5, 3) + 0.7;
                   if (v > 1) {
                     v = 1;
@@ -405,10 +405,10 @@ class Survey {
                 width: 150,
                 borderWidth: 4,
                 borderRadius: 25,
-                backgroundColor: Vitalitas.theme.acc,
-                selectedBackgroundColor: Vitalitas.theme.fg,
-                selectedTextColor: Vitalitas.theme.bg,
-                borderColor: Vitalitas.theme.fg,
+                backgroundColor: Vitalitas.theme.acc!,
+                selectedBackgroundColor: Vitalitas.theme.fg!,
+                selectedTextColor: Vitalitas.theme.bg!,
+                borderColor: Vitalitas.theme.fg!,
               )
             ],
           );
@@ -451,7 +451,7 @@ class Survey {
                     fontSize: 25,
                   ),
                   onPress: () {
-                    if (!(question.value is int)) {
+                    if (!(question.value is num)) {
                       question.value = 7;
                     }
                     if (question.value < 7) {
@@ -461,7 +461,7 @@ class Survey {
                       survey.addToFeedback(
                           'You overslept. Watch out for symptoms of brain fog or anxiety.');
                     }
-                    int sHr = (question.value as int).clamp(0, 12);
+                    int sHr = ((question.value as num).toInt()).clamp(0, 12);
                     double v = sHr / 9.5;
                     if (v > 1) {
                       double top = v - v.floor();
@@ -474,10 +474,10 @@ class Survey {
                   width: 150,
                   borderWidth: 4,
                   borderRadius: 25,
-                  backgroundColor: Vitalitas.theme.acc,
-                  selectedBackgroundColor: Vitalitas.theme.fg,
-                  selectedTextColor: Vitalitas.theme.bg,
-                  borderColor: Vitalitas.theme.fg,
+                  backgroundColor: Vitalitas.theme.acc!,
+                  selectedBackgroundColor: Vitalitas.theme.fg!,
+                  selectedTextColor: Vitalitas.theme.bg!,
+                  borderColor: Vitalitas.theme.fg!,
                 )
               ],
             );
@@ -499,7 +499,7 @@ class Survey {
       survey.submit(v, 7);
     }
 
-    if (age >= 18) {
+    if (age != null && age is int && age >= 18) {
       for (Drug drug in Drug.drugs) {
         if (drug.added) {
           List<Widget> sideEffects = [];
@@ -588,7 +588,7 @@ class Survey {
                         fontSize: 25,
                       ),
                       onPress: () {
-                        if (!(question.value is int)) {
+                        if (!(question.value is num)) {
                           question.value = 5;
                         }
                         if (question.value > 7) {
@@ -600,7 +600,8 @@ class Survey {
                               drug.name +
                               ' become uncomfortable, seek a medical professional for a change in medication.');
                         }
-                        int pain = (question.value as int).clamp(0, 10);
+                        int pain =
+                            ((question.value as num).toInt()).clamp(0, 10);
                         int reg = 10 - pain;
                         double v = reg / 10;
                         survey.submit(v, 10);
@@ -610,10 +611,10 @@ class Survey {
                       width: 150,
                       borderWidth: 4,
                       borderRadius: 25,
-                      backgroundColor: Vitalitas.theme.acc,
-                      selectedBackgroundColor: Vitalitas.theme.fg,
-                      selectedTextColor: Vitalitas.theme.bg,
-                      borderColor: Vitalitas.theme.fg,
+                      backgroundColor: Vitalitas.theme.acc!,
+                      selectedBackgroundColor: Vitalitas.theme.fg!,
+                      selectedTextColor: Vitalitas.theme.bg!,
+                      borderColor: Vitalitas.theme.fg!,
                     )
                   ],
                 );
@@ -703,7 +704,7 @@ class Survey {
                         fontSize: 25,
                       ),
                       onPress: () {
-                        if (!(question.value is int)) {
+                        if (!(question.value is num)) {
                           question.value = 5;
                         }
                         if (question.value > 7) {
@@ -714,9 +715,10 @@ class Survey {
                         } else if (question.value > 3) {
                           survey.addToFeedback('If symptoms of ' +
                               condition.name +
-                              ' increase, seek a medical professional for advice');
+                              ' increase, seek a medical professional for advice.');
                         }
-                        int pain = (question.value as int).clamp(0, 10);
+                        int pain =
+                            ((question.value as num).toInt()).clamp(0, 10);
                         int reg = 10 - pain;
                         double v = reg / 10;
                         survey.submit(v, 10);
@@ -726,10 +728,10 @@ class Survey {
                       width: 150,
                       borderWidth: 4,
                       borderRadius: 25,
-                      backgroundColor: Vitalitas.theme.acc,
-                      selectedBackgroundColor: Vitalitas.theme.fg,
-                      selectedTextColor: Vitalitas.theme.bg,
-                      borderColor: Vitalitas.theme.fg,
+                      backgroundColor: Vitalitas.theme.acc!,
+                      selectedBackgroundColor: Vitalitas.theme.fg!,
+                      selectedTextColor: Vitalitas.theme.bg!,
+                      borderColor: Vitalitas.theme.fg!,
                     )
                   ],
                 );

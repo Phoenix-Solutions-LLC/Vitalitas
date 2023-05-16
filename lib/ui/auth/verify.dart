@@ -39,7 +39,7 @@ class VerifyPageState extends State<VerifyPage> {
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                  colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                   stops: [0.1, 0.9])),
           child: Text(
             'Resend Verification',
@@ -61,8 +61,8 @@ class VerifyPageState extends State<VerifyPage> {
           await Authentification.currentUser!.reload();
 
           verified = Authentification.currentUser!.emailVerified;
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => HomePage.load()));
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
 
           if (verified) {
             timer.cancel();
@@ -70,7 +70,7 @@ class VerifyPageState extends State<VerifyPage> {
         });
       } else {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage.load()));
+            context, MaterialPageRoute(builder: (context) => HomePage()));
       }
     }
   }

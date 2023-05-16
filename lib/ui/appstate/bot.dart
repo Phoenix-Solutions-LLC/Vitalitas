@@ -12,9 +12,12 @@ import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/data/misc/quote.dart';
 import 'package:vitalitas/main.dart';
+import 'package:vitalitas/monetization/adapty/ui/landing.dart';
 import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:vitalitas/ui/appstate/home.dart';
+import 'package:vitalitas/ui/auth/landing.dart';
 
 class BotAppState extends VitalitasAppState {
   static Future<void> load() async {
@@ -33,9 +36,12 @@ class BotAppState extends VitalitasAppState {
     }
     allowedTokens = monthlyTokens;
 
-    Monetization.loadNewInterstitial().future.then((ad) {
-      interstitialAd0 = ad;
-    });
+    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+        false || HomeAppState.bypassIntendedObstacles)) {
+      Monetization.loadNewInterstitial().future.then((ad) {
+        interstitialAd0 = ad;
+      });
+    }
   }
 
   static TextEditingController submitController = new TextEditingController();
@@ -110,6 +116,12 @@ class BotAppState extends VitalitasAppState {
     // }
 
     Function(String) submit = (text) {
+      if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+          false || HomeAppState.bypassIntendedObstacles)) {
+        Navigator.push(state.context,
+            MaterialPageRoute(builder: (context) => LandingPaywallScreen()));
+        return;
+      }
       state.setState(() {
         if (messages.isEmpty || messages[messages.length - 1].text != '...') {
           messages.add(Message(user: true, text: text));
@@ -122,7 +134,7 @@ class BotAppState extends VitalitasAppState {
           chat.add(OpenAIChatCompletionChoiceMessageModel(
               role: 'system',
               content:
-                  'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. Account data is ' +
+                  'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. This data represents the person you are talking to ' +
                       jsonEncode(preface) +
                       '.'));
           for (Message message in messages) {
@@ -263,11 +275,11 @@ class BotAppState extends VitalitasAppState {
                         fillColor: Vitalitas.theme.bg,
                         enabledBorder: OutlineInputBorder(
                             borderSide: BorderSide(
-                                color: Vitalitas.theme.acc, width: 3),
+                                color: Vitalitas.theme.acc!, width: 3),
                             borderRadius: BorderRadius.circular(25)),
                         focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Vitalitas.theme.fg, width: 3),
+                            borderSide: BorderSide(
+                                color: Vitalitas.theme.fg!, width: 3),
                             borderRadius: BorderRadius.circular(25)),
                       ),
                       onSubmitted: submit,
@@ -297,8 +309,8 @@ class BotAppState extends VitalitasAppState {
                           color: data['SubmitIconColor'] ?? Vitalitas.theme.fg,
                         )),
                         decoration: BoxDecoration(
-                            border:
-                                Border.all(width: 3, color: Vitalitas.theme.fg),
+                            border: Border.all(
+                                width: 3, color: Vitalitas.theme.fg!),
                             shape: BoxShape.circle,
                             color: data['SubmitColor'] ?? Vitalitas.theme.acc),
                       ),

@@ -50,6 +50,7 @@ class LoginPageState extends State<LoginPage> {
     return InkWell(
         onTap: () {
           Authentification.signIn(
+                  context: context,
                   email: fields['Email']!.text.trim(),
                   password: fields['Password']!.text.trim())
               .then((value) {
@@ -75,7 +76,7 @@ class LoginPageState extends State<LoginPage> {
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                  colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                   stops: [0.1, 0.9])),
           child: Text(
             'Login',
@@ -124,10 +125,8 @@ class LoginPageState extends State<LoginPage> {
           Authentification.signInWithGoogle(context: context).then((value) => {
                 if (Authentification.currentUser != null)
                   {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomePage.load()))
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomePage()))
                   }
               });
         },

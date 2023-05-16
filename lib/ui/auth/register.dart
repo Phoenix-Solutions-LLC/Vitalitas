@@ -47,6 +47,7 @@ class RegisterPageState extends State<RegisterPage> {
     return InkWell(
         onTap: () {
           Authentification.create(
+                  context: context,
                   email: fields['Email']!.text.trim(),
                   password: fields['Password']!.text.trim())
               .then((value) {
@@ -74,7 +75,7 @@ class RegisterPageState extends State<RegisterPage> {
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                  colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                   stops: [0.1, 0.9])),
           child: Text(
             'Register',

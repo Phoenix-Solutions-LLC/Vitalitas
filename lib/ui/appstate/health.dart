@@ -58,9 +58,12 @@ class HealthAppState extends VitalitasAppState {
 
       print('Requested Health Authorization - ' + success.toString() + '.');
 
-      Monetization.loadNewInterstitial().future.then((ad) {
-        interstitialAd0 = ad;
-      });
+      if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+          false || HomeAppState.bypassIntendedObstacles)) {
+        Monetization.loadNewInterstitial().future.then((ad) {
+          interstitialAd0 = ad;
+        });
+      }
     }
   }
 
@@ -184,14 +187,6 @@ class HealthAppState extends VitalitasAppState {
                           padding: EdgeInsets.all(30),
                           child: InkWell(
                             onTap: () {
-                              // state.setState(() {
-                              //   healthScores[DateTime.now()] = 0.78;
-                              //   Map<String, double> data = {};
-                              //   for (DateTime date in healthScores.keys) {
-                              //     data[date.toString()] = healthScores[date]!;
-                              //   }
-                              //   Data.setUserField('HealthScores', data);
-                              // });
                               if (interstitialAd0 != null) {
                                 interstitialAd0!.show().then((v) {
                                   interstitialAd0 = null;
@@ -239,6 +234,31 @@ class HealthAppState extends VitalitasAppState {
                                                 color: Vitalitas.theme.txt),
                                             child: AnimatedTextKit(
                                                 totalRepeatCount: 1,
+                                                onTap: () {
+                                                  if (interstitialAd0 != null) {
+                                                    interstitialAd0!
+                                                        .show()
+                                                        .then((v) {
+                                                      interstitialAd0 = null;
+                                                      Monetization
+                                                              .loadNewInterstitial()
+                                                          .future
+                                                          .then((ad) {
+                                                        interstitialAd0 = ad;
+                                                      });
+                                                    });
+                                                  }
+                                                  Survey.build(state)
+                                                      .then((survey) {
+                                                    if (survey
+                                                            .questions.length >
+                                                        0) {
+                                                      state.setState(() {
+                                                        openSurvey = survey;
+                                                      });
+                                                    }
+                                                  });
+                                                },
                                                 animatedTexts: [
                                                   TypewriterAnimatedText(
                                                       'How do you feel?',
@@ -396,10 +416,10 @@ class HealthAppState extends VitalitasAppState {
                   width: 150,
                   borderWidth: 4,
                   borderRadius: 25,
-                  backgroundColor: Vitalitas.theme.acc,
-                  selectedBackgroundColor: Vitalitas.theme.fg,
-                  selectedTextColor: Vitalitas.theme.bg,
-                  borderColor: Vitalitas.theme.bg,
+                  backgroundColor: Vitalitas.theme.acc!,
+                  selectedBackgroundColor: Vitalitas.theme.fg!,
+                  selectedTextColor: Vitalitas.theme.bg!,
+                  borderColor: Vitalitas.theme.bg!,
                 )
               ])));
     });
@@ -440,6 +460,7 @@ class HealthAppState extends VitalitasAppState {
           data[date.toString()] = healthScores[date]!;
         }
         String feedback = openSurvey!.formulateResults();
+        print('Feedback: ' + feedback);
         HomeAppState.surveyFeedback = feedback;
         Data.setUserField('SurveyFeedback', feedback).then((value) {
           Data.setUserField('HealthScores', data).then((value) {
@@ -535,16 +556,16 @@ class HealthAppState extends VitalitasAppState {
             data: ThemeData(
                 colorScheme: ColorScheme(
                     brightness: Brightness.light,
-                    primary: Vitalitas.theme.fg,
-                    onPrimary: Vitalitas.theme.fg,
-                    secondary: Vitalitas.theme.acc,
-                    onSecondary: Vitalitas.theme.acc,
-                    error: Vitalitas.theme.acc,
-                    onError: Vitalitas.theme.acc,
-                    background: Vitalitas.theme.bg,
-                    onBackground: Vitalitas.theme.bg,
-                    surface: Vitalitas.theme.bg,
-                    onSurface: Vitalitas.theme.bg)),
+                    primary: Vitalitas.theme.fg!,
+                    onPrimary: Vitalitas.theme.fg!,
+                    secondary: Vitalitas.theme.acc!,
+                    onSecondary: Vitalitas.theme.acc!,
+                    error: Vitalitas.theme.acc!,
+                    onError: Vitalitas.theme.acc!,
+                    background: Vitalitas.theme.bg!,
+                    onBackground: Vitalitas.theme.bg!,
+                    surface: Vitalitas.theme.bg!,
+                    onSurface: Vitalitas.theme.bg!)),
             child: currentQuestion.answerWidget(currentQuestion))
       ]),
     ));

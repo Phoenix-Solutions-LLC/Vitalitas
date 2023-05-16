@@ -12,8 +12,10 @@ import 'package:number_inc_dec/number_inc_dec.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/data.dart';
 import 'package:vitalitas/main.dart';
+import 'package:vitalitas/monetization/adapty/ui/landing.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:vitalitas/authentification/auth.dart';
+import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
 import 'package:vitalitas/ui/auth/reset.dart';
 
@@ -21,8 +23,8 @@ class AccountAppState extends VitalitasAppState {
   static Future<void> load() async {
     dynamic uName = await Data.getUserField('Username');
     if (!(uName is String)) {
-      uName = 'Unnamed';
-      await Data.setUserField('Username', 'Unnamed');
+      uName = Authentification.currentUser?.email ?? 'Unnamed';
+      await Data.setUserField('Username', uName);
     }
     username = uName;
   }
@@ -70,12 +72,12 @@ class AccountAppState extends VitalitasAppState {
           colorBuilder: (b) => b ? Vitalitas.theme.acc : Vitalitas.theme.fg,
           iconBuilder: (value) => value
               ? Icon(Icons.public_outlined,
-                  color: HSLColor.fromColor(Vitalitas.theme.acc)
+                  color: HSLColor.fromColor(Vitalitas.theme.acc!)
                       .withLightness(0.4)
                       .toColor())
               : Icon(
                   Icons.public_off_outlined,
-                  color: HSLColor.fromColor(Vitalitas.theme.fg)
+                  color: HSLColor.fromColor(Vitalitas.theme.fg!)
                       .withLightness(0.2)
                       .toColor(),
                 ),
@@ -122,7 +124,7 @@ class AccountAppState extends VitalitasAppState {
                   padding: EdgeInsets.symmetric(horizontal: 80),
                   child: NumberInputPrefabbed.roundedButtons(
                     controller: TextEditingController(),
-                    incDecBgColor: Vitalitas.theme.fg,
+                    incDecBgColor: Vitalitas.theme.fg!,
                     incIconColor: Vitalitas.theme.bg,
                     decIconColor: Vitalitas.theme.bg,
                     initialValue: age,
@@ -160,7 +162,7 @@ class AccountAppState extends VitalitasAppState {
                   padding: EdgeInsets.symmetric(horizontal: 80),
                   child: NumberInputPrefabbed.roundedButtons(
                     controller: TextEditingController(),
-                    incDecBgColor: Vitalitas.theme.fg,
+                    incDecBgColor: Vitalitas.theme.fg!,
                     incIconColor: Vitalitas.theme.bg,
                     decIconColor: Vitalitas.theme.bg,
                     initialValue: height,
@@ -198,7 +200,7 @@ class AccountAppState extends VitalitasAppState {
                   padding: EdgeInsets.symmetric(horizontal: 80),
                   child: NumberInputPrefabbed.roundedButtons(
                     controller: TextEditingController(),
-                    incDecBgColor: Vitalitas.theme.fg,
+                    incDecBgColor: Vitalitas.theme.fg!,
                     incIconColor: Vitalitas.theme.bg,
                     decIconColor: Vitalitas.theme.bg,
                     initialValue: weight,
@@ -256,90 +258,101 @@ class AccountAppState extends VitalitasAppState {
                           size: 200,
                         )))),
       SizedBox(height: 50),
-      Center(
-        child: Text(
-          'Exercise',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Comfort',
-              fontSize: 35,
-              color: Vitalitas.theme.txt),
-        ),
-      ),
-      SizedBox(
-        height: 15,
-      ),
-      Center(
-        child: Text(
-          'Sets Per Workout',
-          style: TextStyle(
-              fontFamily: 'Comfort', fontSize: 20, color: Vitalitas.theme.txt),
-        ),
-      ),
-      SizedBox(
-        height: 3,
-      ),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 80),
-          child: NumberInputPrefabbed.roundedButtons(
-            controller: TextEditingController(),
-            incDecBgColor: Vitalitas.theme.fg,
-            incIconColor: Vitalitas.theme.bg,
-            decIconColor: Vitalitas.theme.bg,
-            initialValue: Exercise.setsPerWorkout!,
-            buttonArrangement: ButtonArrangement.incLeftDecRight,
-            onChanged: (num) {
-              Data.setUserField('WorkoutsSets', num);
-              Exercise.setsPerWorkout = num as int;
-            },
-            onIncrement: (num) {
-              Data.setUserField('WorkoutsSets', num);
-              Exercise.setsPerWorkout = num as int;
-            },
-            onDecrement: (num) {
-              Data.setUserField('WorkoutsSets', num);
-              Exercise.setsPerWorkout = num as int;
-            },
-            min: 1,
-            max: 5,
-          )),
-      SizedBox(
-        height: 5,
-      ),
-      Center(
-        child: Text(
-          'Exercises Per Set',
-          style: TextStyle(
-              fontFamily: 'Comfort', fontSize: 20, color: Vitalitas.theme.txt),
-        ),
-      ),
-      SizedBox(
-        height: 3,
-      ),
-      Padding(
-          padding: EdgeInsets.symmetric(horizontal: 80),
-          child: NumberInputPrefabbed.roundedButtons(
-            controller: TextEditingController(),
-            incDecBgColor: Vitalitas.theme.fg,
-            incIconColor: Vitalitas.theme.bg,
-            decIconColor: Vitalitas.theme.bg,
-            initialValue: Exercise.exercisesPerSetPerWorkout!,
-            buttonArrangement: ButtonArrangement.incLeftDecRight,
-            onChanged: (num) {
-              Data.setUserField('WorkoutsExercisesPerSet', num);
-              Exercise.exercisesPerSetPerWorkout = num as int;
-            },
-            onIncrement: (num) {
-              Data.setUserField('WorkoutsExercisesPerSet', num);
-              Exercise.exercisesPerSetPerWorkout = num as int;
-            },
-            onDecrement: (num) {
-              Data.setUserField('WorkoutsExercisesPerSet', num);
-              Exercise.exercisesPerSetPerWorkout = num as int;
-            },
-            min: 1,
-            max: 5,
-          )),
+      ((HomeAppState.profile?.accessLevels['premium']?.isActive ??
+              false || HomeAppState.bypassIntendedObstacles)
+          ? Column(
+              children: [
+                Center(
+                  child: Text(
+                    'Exercise',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Comfort',
+                        fontSize: 35,
+                        color: Vitalitas.theme.txt),
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Center(
+                  child: Text(
+                    'Sets Per Workout',
+                    style: TextStyle(
+                        fontFamily: 'Comfort',
+                        fontSize: 20,
+                        color: Vitalitas.theme.txt),
+                  ),
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80),
+                    child: NumberInputPrefabbed.roundedButtons(
+                      controller: TextEditingController(),
+                      incDecBgColor: Vitalitas.theme.fg!,
+                      incIconColor: Vitalitas.theme.bg,
+                      decIconColor: Vitalitas.theme.bg,
+                      initialValue: Exercise.setsPerWorkout!,
+                      buttonArrangement: ButtonArrangement.incLeftDecRight,
+                      onChanged: (num) {
+                        Data.setUserField('WorkoutsSets', num);
+                        Exercise.setsPerWorkout = num as int;
+                      },
+                      onIncrement: (num) {
+                        Data.setUserField('WorkoutsSets', num);
+                        Exercise.setsPerWorkout = num as int;
+                      },
+                      onDecrement: (num) {
+                        Data.setUserField('WorkoutsSets', num);
+                        Exercise.setsPerWorkout = num as int;
+                      },
+                      min: 1,
+                      max: 5,
+                    )),
+                SizedBox(
+                  height: 5,
+                ),
+                Center(
+                  child: Text(
+                    'Exercises Per Set',
+                    style: TextStyle(
+                        fontFamily: 'Comfort',
+                        fontSize: 20,
+                        color: Vitalitas.theme.txt),
+                  ),
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 80),
+                    child: NumberInputPrefabbed.roundedButtons(
+                      controller: TextEditingController(),
+                      incDecBgColor: Vitalitas.theme.fg!,
+                      incIconColor: Vitalitas.theme.bg,
+                      decIconColor: Vitalitas.theme.bg,
+                      initialValue: Exercise.exercisesPerSetPerWorkout!,
+                      buttonArrangement: ButtonArrangement.incLeftDecRight,
+                      onChanged: (num) {
+                        Data.setUserField('WorkoutsExercisesPerSet', num);
+                        Exercise.exercisesPerSetPerWorkout = num as int;
+                      },
+                      onIncrement: (num) {
+                        Data.setUserField('WorkoutsExercisesPerSet', num);
+                        Exercise.exercisesPerSetPerWorkout = num as int;
+                      },
+                      onDecrement: (num) {
+                        Data.setUserField('WorkoutsExercisesPerSet', num);
+                        Exercise.exercisesPerSetPerWorkout = num as int;
+                      },
+                      min: 1,
+                      max: 5,
+                    )),
+              ],
+            )
+          : Container()),
       SizedBox(
         height: 20,
       ),
@@ -362,6 +375,47 @@ class AccountAppState extends VitalitasAppState {
       SizedBox(
         height: 5,
       ),
+      (!(HomeAppState.profile?.accessLevels['premium']?.isActive ?? false))
+          ? AnimatedButton(
+              text: 'Upgrade to Plus',
+              textStyle: TextStyle(
+                fontFamily: 'Comfort',
+                color: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+                    .withLightness(0.2)
+                    .toColor(),
+                fontSize: 14,
+              ),
+              onPress: () {
+                Navigator.push(
+                    state.context,
+                    MaterialPageRoute(
+                        builder: (context) => const LandingPaywallScreen()));
+              },
+              animatedOn: AnimatedOn.onHover,
+              height: 50,
+              width: 150,
+              borderWidth: 4,
+              borderRadius: 25,
+              backgroundColor:
+                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+                      .withLightness(0.8)
+                      .toColor(),
+              selectedBackgroundColor:
+                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+                      .withLightness(0.2)
+                      .toColor(),
+              selectedTextColor:
+                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+                      .withLightness(0.8)
+                      .toColor(),
+              borderColor: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+                  .withLightness(0.1)
+                  .toColor(),
+            )
+          : Container(),
+      SizedBox(
+        height: 15,
+      ),
       AnimatedButton(
         text: 'Reset Password',
         textStyle: TextStyle(
@@ -380,10 +434,10 @@ class AccountAppState extends VitalitasAppState {
         width: 150,
         borderWidth: 4,
         borderRadius: 25,
-        backgroundColor: Vitalitas.theme.acc,
-        selectedBackgroundColor: Vitalitas.theme.fg,
-        selectedTextColor: Vitalitas.theme.bg,
-        borderColor: Vitalitas.theme.fg,
+        backgroundColor: Vitalitas.theme.acc!,
+        selectedBackgroundColor: Vitalitas.theme.fg!,
+        selectedTextColor: Vitalitas.theme.bg!,
+        borderColor: Vitalitas.theme.fg!,
       ),
       SizedBox(
         height: 10,
@@ -407,10 +461,10 @@ class AccountAppState extends VitalitasAppState {
         width: 150,
         borderWidth: 4,
         borderRadius: 25,
-        backgroundColor: Vitalitas.theme.acc,
-        selectedBackgroundColor: Vitalitas.theme.fg,
-        selectedTextColor: Vitalitas.theme.bg,
-        borderColor: Vitalitas.theme.fg,
+        backgroundColor: Vitalitas.theme.acc!,
+        selectedBackgroundColor: Vitalitas.theme.fg!,
+        selectedTextColor: Vitalitas.theme.bg!,
+        borderColor: Vitalitas.theme.fg!,
       ),
       SizedBox(
         height: 10,
@@ -438,10 +492,10 @@ class AccountAppState extends VitalitasAppState {
         width: 150,
         borderWidth: 4,
         borderRadius: 25,
-        backgroundColor: Vitalitas.theme.acc,
-        selectedBackgroundColor: Vitalitas.theme.fg,
-        selectedTextColor: Vitalitas.theme.bg,
-        borderColor: Vitalitas.theme.fg,
+        backgroundColor: Vitalitas.theme.acc!,
+        selectedBackgroundColor: Vitalitas.theme.fg!,
+        selectedTextColor: Vitalitas.theme.bg!,
+        borderColor: Vitalitas.theme.fg!,
       ),
       SizedBox(
         height: 20,

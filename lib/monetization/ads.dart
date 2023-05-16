@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class Monetization {
-  static BannerAd loadNewBanner() {
+  static BannerAd? loadNewBanner() {
+    if (!(!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
+      return null;
+    }
     String id = Platform.isAndroid
         ? 'ca-app-pub-3940256099942544/6300978111'
         : 'ca-app-pub-3940256099942544/2934735716';
@@ -23,29 +27,34 @@ class Monetization {
   }
 
   static Completer<InterstitialAd?> loadNewInterstitial() {
-    String id = Platform.isAndroid
-        ? 'ca-app-pub-3940256099942544/1033173712'
-        : 'ca-app-pub-3940256099942544/4411468910';
     Completer<InterstitialAd?> c = Completer();
-    InterstitialAd.load(
-        adUnitId: id,
-        request: const AdRequest(),
-        adLoadCallback: InterstitialAdLoadCallback(
-          onAdLoaded: (ad) {
-            ad.fullScreenContentCallback = FullScreenContentCallback(
-              onAdFailedToShowFullScreenContent: (ad, err) {
-                ad.dispose();
-              },
-              onAdDismissedFullScreenContent: (ad) {
-                ad.dispose();
-              },
-            );
-            c.complete(ad);
-          },
-          onAdFailedToLoad: (LoadAdError error) {
-            print('InterstitialAd failed to load.');
-          },
-        ));
-    return c;
+    if (!(!kIsWeb && (Platform.isAndroid || Platform.isIOS))) {
+      c.complete(null);
+      return c;
+    } else {
+      String id = Platform.isAndroid
+          ? 'ca-app-pub-3940256099942544/1033173712'
+          : 'ca-app-pub-3940256099942544/4411468910';
+      InterstitialAd.load(
+          adUnitId: id,
+          request: const AdRequest(),
+          adLoadCallback: InterstitialAdLoadCallback(
+            onAdLoaded: (ad) {
+              ad.fullScreenContentCallback = FullScreenContentCallback(
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  ad.dispose();
+                },
+                onAdDismissedFullScreenContent: (ad) {
+                  ad.dispose();
+                },
+              );
+              c.complete(ad);
+            },
+            onAdFailedToLoad: (LoadAdError error) {
+              print('InterstitialAd failed to load.');
+            },
+          ));
+      return c;
+    }
   }
 }

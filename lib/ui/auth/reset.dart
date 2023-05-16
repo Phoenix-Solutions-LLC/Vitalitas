@@ -39,7 +39,7 @@ class ResetPageState extends State<ResetPage> {
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                  colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                   stops: [0.1, 0.9])),
           child: Text(
             'Send Password Reset Email',

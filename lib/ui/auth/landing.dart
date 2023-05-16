@@ -22,7 +22,7 @@ class LandingPageState extends State<LandingPage> {
             gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: [Vitalitas.theme.fg, Vitalitas.theme.acc],
+                colors: [Vitalitas.theme.fg!, Vitalitas.theme.acc!],
                 stops: [0.1, 0.9])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +66,7 @@ class LandingPageState extends State<LandingPage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
-                  border: Border.all(color: Vitalitas.theme.bg, width: 2),
+                  border: Border.all(color: Vitalitas.theme.bg!, width: 2),
                 ),
                 child: Text(
                   'Register',
