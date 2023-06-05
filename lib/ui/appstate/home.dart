@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -22,6 +23,7 @@ import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/healthdex.dart';
 import 'package:vitalitas/ui/loading.dart';
 import 'package:vitalitas/ui/widgets/clip/wave.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomePage extends StatefulWidget {
   static List<VitalitasAppState> appStates = [];
@@ -68,7 +70,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomeAppState extends VitalitasAppState {
-  static bool built = false;
+  static bool initalBuilt = false;
   static AdaptyProfile? profile;
   static bool bypassIntendedObstacles = false;
 
@@ -565,19 +567,19 @@ class HomeState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    HomePage.appStates.add(HomeAppState());
-    HomePage.appStates.add(HealthAppState());
-    HomePage.appStates.add(HealthdexAppState());
-    HomePage.appStates.add(AccountAppState());
-    HomePage.appStates.add(BotAppState());
+    if (!HomeAppState.initalBuilt) {
+      HomePage.appStates.add(HomeAppState());
+      HomePage.appStates.add(HealthAppState());
+      HomePage.appStates.add(HealthdexAppState());
+      HomePage.appStates.add(AccountAppState());
+      HomePage.appStates.add(BotAppState());
+    }
     () async {
       setState(() {
         loading = true;
       });
 
-      if (!HomeAppState.built) {
-        HomeAppState.built = true;
-
+      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
         if (HomeAppState.profile == null) {
           HomeAppState.profile = await Adapty().getProfile();
           dynamic prem = await Data.getUserField('Premium');
@@ -585,28 +587,31 @@ class HomeState extends State<HomePage> {
             HomeAppState.bypassIntendedObstacles = prem;
           }
         }
+      }
 
-        await Condition.load();
-        await Drug.load();
-        await Exercise.load();
-        await Quote.load();
-        await HealthAppState.load();
-        await BotAppState.load();
-        await AccountAppState.load();
-        HomeAppState.load();
+      await Condition.load();
+      await Drug.load();
+      await Exercise.load();
+      await Quote.load();
+      await HealthAppState.load();
+      await BotAppState.load();
+      await AccountAppState.load();
+      HomeAppState.load();
 
-        print('Finished Initial Building.');
+      print('Finished Initial Building.');
 
-        dynamic pS = await Data.getUserField('SurveyFeedback');
-        if (pS is String) {
-          HomeAppState.surveyFeedback = pS;
-        }
+      dynamic pS = await Data.getUserField('SurveyFeedback');
+      if (pS is String) {
+        HomeAppState.surveyFeedback = pS;
       }
 
       setState(() {
         loading = false;
       });
     }();
+    if (!HomeAppState.initalBuilt) {
+      HomeAppState.initalBuilt = true;
+    }
   }
 
   @override

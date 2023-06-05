@@ -1,98 +1,434 @@
-diff --git a/ios/Runner.xcodeproj/project.pbxproj b/ios/Runner.xcodeproj/project.pbxproj
-index f358281..21ab00d 100644
---- a/ios/Runner.xcodeproj/project.pbxproj
-+++ b/ios/Runner.xcodeproj/project.pbxproj
-@@ -14,6 +14,7 @@
- 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
- 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
- 		97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FF1CF9000F007C117D /* LaunchScreen.storyboard */; };
-+		FFA14DF729E0A4EF00C46B67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FFA14DF629E0A4EF00C46B67 /* GoogleService-Info.plist */; };
- /* End PBXBuildFile section */
- 
- /* Begin PBXCopyFilesBuildPhase section */
-@@ -47,6 +48,7 @@
- 		B70A572265CE07005283EAEC /* Pods-Runner.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.debug.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"; sourceTree = "<group>"; };
- 		D3D31EF4F851DDC2467CED1A /* Pods_Runner.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Runner.framework; sourceTree = BUILT_PRODUCTS_DIR; };
- 		E227F4CC41552E1BFF021F3E /* Pods-Runner.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Runner.release.xcconfig"; path = "Target Support Files/Pods-Runner/Pods-Runner.release.xcconfig"; sourceTree = "<group>"; };
-+		FFA14DF629E0A4EF00C46B67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "Runner/GoogleService-Info.plist"; sourceTree = "<group>"; };
- 		FFCC414B29DF37C800B2482E /* Runner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Runner.entitlements; sourceTree = "<group>"; };
- /* End PBXFileReference section */
- 
-@@ -69,7 +71,6 @@
- 				E227F4CC41552E1BFF021F3E /* Pods-Runner.release.xcconfig */,
- 				8DE32BE8D370802E688F3193 /* Pods-Runner.profile.xcconfig */,
- 			);
--			name = Pods;
- 			path = Pods;
- 			sourceTree = "<group>";
- 		};
-@@ -95,6 +96,7 @@
- 		97C146E51CF9000F007C117D = {
- 			isa = PBXGroup;
- 			children = (
-+				FFA14DF629E0A4EF00C46B67 /* GoogleService-Info.plist */,
- 				9740EEB11CF90186004384FC /* Flutter */,
- 				97C146F01CF9000F007C117D /* Runner */,
- 				97C146EF1CF9000F007C117D /* Products */,
-@@ -192,6 +194,7 @@
- 			files = (
- 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
- 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,
-+				FFA14DF729E0A4EF00C46B67 /* GoogleService-Info.plist in Resources */,
- 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
- 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
- 			);
-diff --git a/ios/Runner/GoogleService-Info.plist b/ios/Runner/GoogleService-Info.plist
-index 3fb7a34..4de6e4f 100644
---- a/ios/Runner/GoogleService-Info.plist
-+++ b/ios/Runner/GoogleService-Info.plist
-@@ -3,21 +3,21 @@
- <plist version="1.0">
- <dict>
- 	<key>CLIENT_ID</key>
--	<string>834175226283-ss43mlf3fremeg6jtiucha167go3seea.apps.googleusercontent.com</string>
-+	<string>966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com</string>
- 	<key>REVERSED_CLIENT_ID</key>
--	<string>com.googleusercontent.apps.834175226283-ss43mlf3fremeg6jtiucha167go3seea</string>
-+	<string>com.googleusercontent.apps.966765070451-5vpltadtciboa93sb6ldm7sqk98188k3</string>
- 	<key>API_KEY</key>
--	<string>AIzaSyDFQa3Razli-hKtTeMcP3uXWcHdfB8YAWQ</string>
-+	<string>AIzaSyCf00Mm-8JUpKdvZSS2g2sfo8dg4zADDGI</string>
- 	<key>GCM_SENDER_ID</key>
--	<string>834175226283</string>
-+	<string>966765070451</string>
- 	<key>PLIST_VERSION</key>
- 	<string>1</string>
- 	<key>BUNDLE_ID</key>
- 	<string>com.patetlex.vitalitas</string>
- 	<key>PROJECT_ID</key>
--	<string>vitalitas-71a10</string>
-+	<string>vitalitas-bb512</string>
- 	<key>STORAGE_BUCKET</key>
--	<string>vitalitas-71a10.appspot.com</string>
-+	<string>vitalitas-bb512.appspot.com</string>
- 	<key>IS_ADS_ENABLED</key>
- 	<false></false>
- 	<key>IS_ANALYTICS_ENABLED</key>
-@@ -29,6 +29,6 @@
- 	<key>IS_SIGNIN_ENABLED</key>
- 	<true></true>
- 	<key>GOOGLE_APP_ID</key>
--	<string>1:834175226283:ios:fec95188cb5286f1c102ee</string>
-+	<string>1:966765070451:ios:7048fa79b25b5bfd520206</string>
- </dict>
- </plist>
-\ No newline at end of file
 diff --git a/ios/Runner/Info.plist b/ios/Runner/Info.plist
-index 00fa6ef..932728a 100644
+index 180e524..f5869a6 100644
 --- a/ios/Runner/Info.plist
 +++ b/ios/Runner/Info.plist
-@@ -9,7 +9,7 @@
- 			<string>Editor</string>
- 			<key>CFBundleURLSchemes</key>
- 			<array>
--				<string>com.googleusercontent.apps.834175226283-ss43mlf3fremeg6jtiucha167go3seea</string>
-+				<string>com.googleusercontent.apps.966765070451-5vpltadtciboa93sb6ldm7sqk98188k3</string>
- 			</array>
- 		</dict>
+@@ -39,223 +39,225 @@
+ 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+ 	<key>GADApplicationIdentifier</key>
+ 	<string>ca-app-pub-5950336596467657~8283392467</string>
+-	<key>SKAdNetworkItems</key>
+-	<array>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>cstr6suwn9.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>4fzdc2evr5.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>4pfyvq9l8r.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>2fnua5tdw4.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>ydx93a7ass.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>5a6flpkh64.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>p78axxw29g.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>v72qych5uu.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>ludvb6z3bs.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>cp8zw746q7.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>c6k4g5qg8m.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>s39g8k73mm.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>3qy4746246.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>3sh42y64q3.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>f38h382jlk.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>hs6bdukanm.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>prcb7njmu6.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>v4nxqhlyqp.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>wzmmz9fp6w.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>yclnxrl5pm.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>t38b2kh725.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>7ug5zh24hu.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>9rd848q2bz.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>y5ghdn5j9k.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>n6fk4nfna4.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>v9wttpbfk9.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>n38lu8286q.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>47vhws6wlr.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>kbd757ywx3.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>9t245vhmpl.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>a2p9lx4jpn.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>22mmun2rn5.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>4468km3ulz.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>2u9pt9hc89.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>8s468mfl3y.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>av6w8kgt66.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>klf5c3l5u5.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>ppxm28t8ap.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>424m5254lk.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>ecpz2srf59.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>uw77j35x4d.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>mlmmfzh3r3.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>578prtvx9j.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>4dzt52r2t5.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>gta9lk7p23.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>e5fvkxwrpn.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>8c4e2ghe7u.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>zq492l623r.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>3rd42ekr43.skadnetwork</string>
+-	</dict>
+-	<dict>
+-		<key>SKAdNetworkIdentifier</key>
+-		<string>3qcr597p9d.skadnetwork</string>
+-	</dict>
+-	</array>
+ 	<key>LSRequiresIPhoneOS</key>
+ 	<true/>
+ 	<key>NSHealthShareUsageDescription</key>
+ 	<string>We will sync your data with the Apple Health app to give you better insights</string>
+ 	<key>NSHealthUpdateUsageDescription</key>
+ 	<string>We will sync your data with the Apple Health app to give you better insights</string>
++	<key>SKAdNetworkItems</key>
++	<array>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>cstr6suwn9.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>4fzdc2evr5.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>4pfyvq9l8r.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>2fnua5tdw4.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>ydx93a7ass.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>5a6flpkh64.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>p78axxw29g.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>v72qych5uu.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>ludvb6z3bs.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>cp8zw746q7.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>c6k4g5qg8m.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>s39g8k73mm.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>3qy4746246.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>3sh42y64q3.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>f38h382jlk.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>hs6bdukanm.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>prcb7njmu6.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>v4nxqhlyqp.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>wzmmz9fp6w.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>yclnxrl5pm.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>t38b2kh725.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>7ug5zh24hu.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>9rd848q2bz.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>y5ghdn5j9k.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>n6fk4nfna4.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>v9wttpbfk9.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>n38lu8286q.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>47vhws6wlr.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>kbd757ywx3.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>9t245vhmpl.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>a2p9lx4jpn.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>22mmun2rn5.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>4468km3ulz.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>2u9pt9hc89.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>8s468mfl3y.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>av6w8kgt66.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>klf5c3l5u5.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>ppxm28t8ap.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>424m5254lk.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>ecpz2srf59.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>uw77j35x4d.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>mlmmfzh3r3.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>578prtvx9j.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>4dzt52r2t5.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>gta9lk7p23.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>e5fvkxwrpn.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>8c4e2ghe7u.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>zq492l623r.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>3rd42ekr43.skadnetwork</string>
++		</dict>
++		<dict>
++			<key>SKAdNetworkIdentifier</key>
++			<string>3qcr597p9d.skadnetwork</string>
++		</dict>
++	</array>
+ 	<key>UIApplicationSupportsIndirectInputEvents</key>
+ 	<true/>
+ 	<key>UILaunchStoryboardName</key>
+-	<string>LaunchScreen</string>
++	<string>Main.storyboard</string>
+ 	<key>UIMainStoryboardFile</key>
+ 	<string>Main</string>
+ 	<key>UISupportedInterfaceOrientations</key>
+ 	<array>
++		<string>UIInterfaceOrientationLandscapeLeft</string>
++		<string>UIInterfaceOrientationLandscapeRight</string>
+ 		<string>UIInterfaceOrientationPortrait</string>
+ 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
  	</array>

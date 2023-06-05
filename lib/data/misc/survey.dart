@@ -161,6 +161,34 @@ class Survey {
 
     List<Question> possibleQuestions = [];
 
+    // Understanding
+    possibleQuestions.add(Question(
+        priority: 0,
+        question:
+            'This survey will formulate 0-10 questions for you to answer. This survey may ask for personal information regarding diagnosis, medications, and other medical information which will never be shared publicly. Your response to each question will add weight to a final score we denote as your daily health score.',
+        answerWidget: (question) {
+          return AnimatedButton(
+            text: 'Proceed',
+            textStyle: TextStyle(
+              fontFamily: 'Comfort',
+              color: Vitalitas.theme.txt,
+              fontSize: 25,
+            ),
+            onPress: () {
+              survey.submit(0, 0);
+            },
+            animatedOn: AnimatedOn.onHover,
+            height: 50,
+            width: 150,
+            borderWidth: 4,
+            borderRadius: 25,
+            backgroundColor: Vitalitas.theme.acc!,
+            selectedBackgroundColor: Vitalitas.theme.fg!,
+            selectedTextColor: Vitalitas.theme.bg!,
+            borderColor: Vitalitas.theme.fg!,
+          );
+        }));
+
     dynamic age = await Data.getUserField('Age');
     if (!(age is int)) {
       possibleQuestions.add(Question(

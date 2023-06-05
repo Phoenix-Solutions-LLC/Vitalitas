@@ -13,6 +13,8 @@ class Drug {
   static Uri api =
       Uri.https('www.patetlex.com', '/webapps/vitalitas/api/drugs/data.json');
   static Future<void> load() async {
+    Drug.drugs.clear();
+
     var doc = await http.get(api);
     var json = jsonDecode(doc.body);
     dynamic ddata = await Data.getUserField('Drugs');
@@ -291,7 +293,7 @@ class Drug {
                   launchUrl(Uri.parse(backLink));
                 },
                 child: Text(
-                  'Learn More',
+                  'Source: Mayo Clinic',
                   textAlign: TextAlign.center,
                 )))));
     return Container(

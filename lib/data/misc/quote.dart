@@ -7,6 +7,8 @@ class Quote {
   static Uri api =
       Uri.https('www.patetlex.com', '/webapps/vitalitas/api/quotes/data.json');
   static Future<void> load() async {
+    quotes.clear();
+
     var doc = await http.get(api);
     var json = jsonDecode(doc.body);
 

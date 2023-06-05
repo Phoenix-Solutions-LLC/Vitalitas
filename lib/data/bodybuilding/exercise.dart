@@ -15,6 +15,10 @@ class Exercise {
   static Uri api = Uri.https(
       'www.patetlex.com', '/webapps/vitalitas/api/exercises/data.json');
   static Future<void> load() async {
+    exercises.clear();
+    todaysWorkout = null;
+    yesterdaysWorkout = null;
+
     var doc = await http.get(api);
     var json = jsonDecode(doc.body);
     dynamic edata = await Data.getUserField('PreferredExercises');

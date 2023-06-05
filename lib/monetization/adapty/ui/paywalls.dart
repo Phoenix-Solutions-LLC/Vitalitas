@@ -20,6 +20,30 @@ class PaywallsScreenState extends State<PaywallsScreen> {
   Widget build(BuildContext context) {
     List<Widget> pU = [];
     pU.add(SizedBox(
+      height: 20,
+    ));
+    pU.add(InkWell(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: Padding(
+          padding: EdgeInsets.only(bottom: 10, top: 20),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Row(children: [
+                Icon(Icons.arrow_back_ios_new_outlined),
+                DefaultTextStyle(
+                    style: TextStyle(
+                        fontFamily: 'Comfort',
+                        fontSize: 10,
+                        color: Vitalitas.theme.txt),
+                    child: Text(
+                      'Back',
+                      textAlign: TextAlign.center,
+                    ))
+              ]))),
+    ));
+    pU.add(SizedBox(
       height: 40,
     ));
     pU.add(Padding(

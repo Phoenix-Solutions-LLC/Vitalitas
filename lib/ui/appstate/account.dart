@@ -386,10 +386,12 @@ class AccountAppState extends VitalitasAppState {
                 fontSize: 14,
               ),
               onPress: () {
-                Navigator.push(
-                    state.context,
-                    MaterialPageRoute(
-                        builder: (context) => const LandingPaywallScreen()));
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  Navigator.push(
+                      state.context,
+                      MaterialPageRoute(
+                          builder: (context) => LandingPaywallScreen()));
+                });
               },
               animatedOn: AnimatedOn.onHover,
               height: 50,
@@ -425,8 +427,10 @@ class AccountAppState extends VitalitasAppState {
         ),
         onPress: () {
           if (Authentification.currentUser != null) {
-            Navigator.push(state.context,
-                MaterialPageRoute(builder: (context) => ResetPage()));
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              Navigator.push(state.context,
+                  MaterialPageRoute(builder: (context) => ResetPage()));
+            });
           }
         },
         animatedOn: AnimatedOn.onHover,
@@ -443,7 +447,7 @@ class AccountAppState extends VitalitasAppState {
         height: 10,
       ),
       AnimatedButton(
-        text: 'Log out',
+        text: 'Log Out',
         textStyle: TextStyle(
           fontFamily: 'Comfort',
           color: Vitalitas.theme.txt,
@@ -451,9 +455,12 @@ class AccountAppState extends VitalitasAppState {
         ),
         onPress: () {
           if (Authentification.currentUser != null) {
+            bodyWidgets = null;
             Authentification.signOut();
-            Navigator.push(state.context,
-                MaterialPageRoute(builder: (context) => LandingPage()));
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              Navigator.push(state.context,
+                  MaterialPageRoute(builder: (context) => LandingPage()));
+            });
           }
         },
         animatedOn: AnimatedOn.onHover,
@@ -483,8 +490,11 @@ class AccountAppState extends VitalitasAppState {
                 doc.delete();
               }
             });
-            Navigator.push(state.context,
-                MaterialPageRoute(builder: (context) => LandingPage()));
+            Authentification.signOut();
+            WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+              Navigator.push(state.context,
+                  MaterialPageRoute(builder: (context) => LandingPage()));
+            });
           }
         },
         animatedOn: AnimatedOn.onHover,

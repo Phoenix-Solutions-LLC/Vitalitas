@@ -69,8 +69,10 @@ class VerifyPageState extends State<VerifyPage> {
           }
         });
       } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+        WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => HomePage()));
+        });
       }
     }
   }

@@ -25,9 +25,9 @@ void main() async {
   );
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     MobileAds.instance.initialize();
+    Adapty().activate();
+    Adapty().setLogLevel(AdaptyLogLevel.verbose);
   }
-  Adapty().activate();
-  Adapty().setLogLevel(AdaptyLogLevel.verbose);
   runApp(const Vitalitas());
 }
 

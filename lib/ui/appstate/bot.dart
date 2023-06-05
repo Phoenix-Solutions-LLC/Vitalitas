@@ -134,7 +134,7 @@ class BotAppState extends VitalitasAppState {
           chat.add(OpenAIChatCompletionChoiceMessageModel(
               role: 'system',
               content:
-                  'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. This data represents the person you are talking to ' +
+                  'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. Your data should preferably be sourced from the Mayo Clinic, nonetheless, include links to your sources at the bottom of your responses. This data represents the person you are talking to ' +
                       jsonEncode(preface) +
                       '.'));
           for (Message message in messages) {

@@ -10,8 +10,10 @@ class Monetization {
       return null;
     }
     String id = Platform.isAndroid
+        //? 'ca-app-pub-5950336596467657/4089244973' // real
         ? 'ca-app-pub-3940256099942544/6300978111'
-        : 'ca-app-pub-3940256099942544/2934735716';
+        //: 'ca-app-pub-3940256099942544/2934735716';
+        : 'ca-app-pub-5950336596467657/1208311634'; // real
     return BannerAd(
       adUnitId: id,
       request: const AdRequest(),
@@ -33,8 +35,10 @@ class Monetization {
       return c;
     } else {
       String id = Platform.isAndroid
+          // ? 'ca-app-pub-5950336596467657/5446520683' // real
           ? 'ca-app-pub-3940256099942544/1033173712'
-          : 'ca-app-pub-3940256099942544/4411468910';
+          // : 'ca-app-pub-3940256099942544/4411468910';
+          : 'ca-app-pub-5950336596467657/4213269991'; // real
       InterstitialAd.load(
           adUnitId: id,
           request: const AdRequest(),

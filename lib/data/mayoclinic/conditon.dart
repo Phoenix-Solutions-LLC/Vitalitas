@@ -13,6 +13,8 @@ class Condition {
   static Uri api = Uri.https(
       'www.patetlex.com', '/webapps/vitalitas/api/conditions/data.json');
   static Future<void> load() async {
+    conditions.clear();
+
     var doc = await http.get(api);
     var json = jsonDecode(doc.body);
     dynamic cdata = await Data.getUserField('Conditions');
@@ -329,7 +331,7 @@ class Condition {
                   launchUrl(Uri.parse(backLink));
                 },
                 child: Text(
-                  'Learn More',
+                  'Source: Mayo Clinic',
                   textAlign: TextAlign.center,
                 )))));
     return Container(

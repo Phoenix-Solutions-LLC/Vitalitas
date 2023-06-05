@@ -23,6 +23,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HealthAppState extends VitalitasAppState {
   static Future<void> load() async {
+    healthScores.clear();
+
     dynamic res = await Data.getUserField('HealthScores');
     if (res == null) {
       Data.setUserField('HealthScores', {});
@@ -277,6 +279,18 @@ class HealthAppState extends VitalitasAppState {
                                                 color: Vitalitas.theme.txt),
                                             child: Text(
                                                 'Take your daily quiz now.'))),
+                                    (kIsWeb
+                                        ? Container()
+                                        : Center(
+                                            child: DefaultTextStyle(
+                                                style: TextStyle(
+                                                    fontFamily: 'Comfort',
+                                                    fontSize: 15,
+                                                    color: Vitalitas.theme.txt),
+                                                child: Text('via ' +
+                                                    (Platform.isAndroid
+                                                        ? 'Health Connect'
+                                                        : 'HealthKit'))))),
                                     SizedBox(
                                       height: 15,
                                     )
@@ -460,9 +474,13 @@ class HealthAppState extends VitalitasAppState {
           data[date.toString()] = healthScores[date]!;
         }
         String feedback = openSurvey!.formulateResults();
-        print('Feedback: ' + feedback);
-        HomeAppState.surveyFeedback = feedback;
-        Data.setUserField('SurveyFeedback', feedback).then((value) {
+        if (feedback.isNotEmpty) {
+          feedback = feedback +
+              ' Referenced from Mayo Clinic, see www.mayoclinic.org.';
+        }
+        HomeAppState.surveyFeedback = feedback.isEmpty ? null : feedback;
+        Data.setUserField('SurveyFeedback', feedback.isEmpty ? null : feedback)
+            .then((value) {
           Data.setUserField('HealthScores', data).then((value) {
             state.setState(() {
               openSurvey = null;

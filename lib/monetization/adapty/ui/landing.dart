@@ -81,6 +81,30 @@ class LandingPaywallScreenState extends State<LandingPaywallScreen> {
                 child: Column(
                   children: [
                     SizedBox(
+                      height: 20,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Padding(
+                          padding: EdgeInsets.only(bottom: 10, top: 20),
+                          child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(children: [
+                                Icon(Icons.arrow_back_ios_new_outlined),
+                                DefaultTextStyle(
+                                    style: TextStyle(
+                                        fontFamily: 'Comfort',
+                                        fontSize: 10,
+                                        color: Vitalitas.theme.txt),
+                                    child: Text(
+                                      'Back',
+                                      textAlign: TextAlign.center,
+                                    ))
+                              ]))),
+                    ),
+                    SizedBox(
                       height: 100,
                     ),
                     Padding(
