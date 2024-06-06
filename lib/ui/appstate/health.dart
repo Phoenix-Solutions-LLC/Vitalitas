@@ -19,7 +19,7 @@ import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:vitalitas/ui/appstate/home.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HealthAppState extends VitalitasAppState {
   static Future<void> load() async {
@@ -60,12 +60,12 @@ class HealthAppState extends VitalitasAppState {
 
       print('Requested Health Authorization - ' + success.toString() + '.');
 
-      if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-          false || HomeAppState.bypassIntendedObstacles)) {
-        Monetization.loadNewInterstitial().future.then((ad) {
-          interstitialAd0 = ad;
-        });
-      }
+      // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+      //     false || HomeAppState.bypassIntendedObstacles)) {
+      //   Monetization.loadNewInterstitial().future.then((ad) {
+      //     interstitialAd0 = ad;
+      //   });
+      // }
     }
   }
 
@@ -84,7 +84,7 @@ class HealthAppState extends VitalitasAppState {
     return nowScore;
   }
 
-  static InterstitialAd? interstitialAd0;
+  // static InterstitialAd? interstitialAd0;
 
   static Survey? openSurvey;
   @override
@@ -189,16 +189,16 @@ class HealthAppState extends VitalitasAppState {
                           padding: EdgeInsets.all(30),
                           child: InkWell(
                             onTap: () {
-                              if (interstitialAd0 != null) {
-                                interstitialAd0!.show().then((v) {
-                                  interstitialAd0 = null;
-                                  Monetization.loadNewInterstitial()
-                                      .future
-                                      .then((ad) {
-                                    interstitialAd0 = ad;
-                                  });
-                                });
-                              }
+                              // if (interstitialAd0 != null) {
+                              //   interstitialAd0!.show().then((v) {
+                              //     interstitialAd0 = null;
+                              //     Monetization.loadNewInterstitial()
+                              //         .future
+                              //         .then((ad) {
+                              //       interstitialAd0 = ad;
+                              //     });
+                              //   });
+                              // }
                               Survey.build(state).then((survey) {
                                 if (survey.questions.length > 0) {
                                   state.setState(() {
@@ -237,19 +237,19 @@ class HealthAppState extends VitalitasAppState {
                                             child: AnimatedTextKit(
                                                 totalRepeatCount: 1,
                                                 onTap: () {
-                                                  if (interstitialAd0 != null) {
-                                                    interstitialAd0!
-                                                        .show()
-                                                        .then((v) {
-                                                      interstitialAd0 = null;
-                                                      Monetization
-                                                              .loadNewInterstitial()
-                                                          .future
-                                                          .then((ad) {
-                                                        interstitialAd0 = ad;
-                                                      });
-                                                    });
-                                                  }
+                                                  // if (interstitialAd0 != null) {
+                                                  //   interstitialAd0!
+                                                  //       .show()
+                                                  //       .then((v) {
+                                                  //     interstitialAd0 = null;
+                                                  //     Monetization
+                                                  //             .loadNewInterstitial()
+                                                  //         .future
+                                                  //         .then((ad) {
+                                                  //       interstitialAd0 = ad;
+                                                  //     });
+                                                  //   });
+                                                  // }
                                                   Survey.build(state)
                                                       .then((survey) {
                                                     if (survey

@@ -11,10 +11,9 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Condition {
   static Uri api = Uri.https(
-      'www.patetlex.com', '/webapps/vitalitas/api/conditions/data.json');
+      'www.phoenixsolve.com', '/webapps/vitalitas/api/conditions/data.json');
   static Future<void> load() async {
     conditions.clear();
-
     var doc = await http.get(api);
     var json = jsonDecode(doc.body);
     dynamic cdata = await Data.getUserField('Conditions');

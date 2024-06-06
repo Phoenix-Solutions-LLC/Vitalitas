@@ -12,9 +12,16 @@ class RegisterPage extends StatefulWidget {
 class RegisterPageState extends State<RegisterPage> {
   Map<String, TextEditingController> fields = new Map();
 
+  @override
+  void initState() {
+    super.initState();
+    fields["Username"] = TextEditingController();
+    fields["Email"] = TextEditingController();
+    fields["Password"] = TextEditingController();
+  }
+
   Widget entryField(String title, {bool isPassword = false}) {
-    TextEditingController controller = TextEditingController();
-    fields[title] = controller;
+    TextEditingController controller = fields[title]!;
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(

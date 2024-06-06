@@ -8,7 +8,7 @@
 PRODUCT_NAME = Vitalitas;
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.patetlex.vitalitas;
+PRODUCT_BUNDLE_IDENTIFIER = com.phoenixsolve.vitalitas;
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.patetlex. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.phoenixsolve. All rights reserved.

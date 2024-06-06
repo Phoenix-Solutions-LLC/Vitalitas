@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vitalitas/authentification/auth.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
@@ -11,7 +11,7 @@ import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
-import 'package:adapty_flutter/adapty_flutter.dart';
+// import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'firebase_options.dart';
@@ -23,11 +23,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-    MobileAds.instance.initialize();
-    Adapty().activate();
-    Adapty().setLogLevel(AdaptyLogLevel.verbose);
-  }
+  // if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+  //   MobileAds.instance.initialize();
+  //   Adapty().activate();
+  //   Adapty().setLogLevel(AdaptyLogLevel.verbose);
+  // }
   runApp(const Vitalitas());
 }
 

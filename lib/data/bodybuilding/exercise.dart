@@ -13,7 +13,7 @@ import 'package:vitalitas/ui/appstate/healthdex.dart';
 
 class Exercise {
   static Uri api = Uri.https(
-      'www.patetlex.com', '/webapps/vitalitas/api/exercises/data.json');
+      'www.phoenixsolve.com', '/webapps/vitalitas/api/exercises/data.json');
   static Future<void> load() async {
     exercises.clear();
     todaysWorkout = null;

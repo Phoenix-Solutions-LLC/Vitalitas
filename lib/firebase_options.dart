@@ -44,31 +44,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCVZL3_G7cWFgJwCk70bRBzs8MHVGV4XkU',
-    appId: '1:966765070451:web:bb6f38fbce1cf01b520206',
-    messagingSenderId: '966765070451',
-    projectId: 'vitalitas-bb512',
-    authDomain: 'vitalitas-bb512.firebaseapp.com',
-    storageBucket: 'vitalitas-bb512.appspot.com',
-    measurementId: 'G-3FE5YQQQGL',
+    apiKey: 'AIzaSyCHC6BNv9exY7ayJ9-LVwarUaPkK4hmGcc',
+    appId: '1:1090975046021:web:4f200c15cd9e1718f1ccec',
+    messagingSenderId: '1090975046021',
+    projectId: 'vitalitas-4bb9e',
+    authDomain: 'vitalitas-4bb9e.firebaseapp.com',
+    storageBucket: 'vitalitas-4bb9e.appspot.com',
+    measurementId: 'G-DBQY7R8PL2',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCv8NhhZ_eN6xBHIu6dwILoxHZKrnnYIz8',
-    appId: '1:966765070451:android:e727c0f0b46b0d76520206',
-    messagingSenderId: '966765070451',
-    projectId: 'vitalitas-bb512',
-    storageBucket: 'vitalitas-bb512.appspot.com',
+    apiKey: 'AIzaSyAVqhhYsQYA5ngG8EyEpaSOw_S_D51UVNk',
+    appId: '1:1090975046021:android:5eee3ea0ff40d48cf1ccec',
+    messagingSenderId: '1090975046021',
+    projectId: 'vitalitas-4bb9e',
+    storageBucket: 'vitalitas-4bb9e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCf00Mm-8JUpKdvZSS2g2sfo8dg4zADDGI',
-    appId: '1:966765070451:ios:7048fa79b25b5bfd520206',
-    messagingSenderId: '966765070451',
-    projectId: 'vitalitas-bb512',
-    storageBucket: 'vitalitas-bb512.appspot.com',
-    iosClientId: '966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com',
-    iosBundleId: 'com.patetlex.vitalitas',
+    apiKey: 'AIzaSyASAFMt2Lg8eZ_27Q5hWiD5TKwStJHXqHc',
+    appId: '1:1090975046021:ios:68fb84c7d6f3f47bf1ccec',
+    messagingSenderId: '1090975046021',
+    projectId: 'vitalitas-4bb9e',
+    storageBucket: 'vitalitas-4bb9e.appspot.com',
+    iosBundleId: 'com.phoenixsolve.vitalitas',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -77,7 +76,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '966765070451',
     projectId: 'vitalitas-bb512',
     storageBucket: 'vitalitas-bb512.appspot.com',
-    iosClientId: '966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com',
-    iosBundleId: 'com.patetlex.vitalitas',
+    iosClientId:
+        '966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com',
+    iosBundleId: 'com.phoenixsolve.vitalitas',
   );
 }

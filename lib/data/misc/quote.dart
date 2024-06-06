@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:vitalitas/data/data.dart';
 
 class Quote {
-  static Uri api =
-      Uri.https('www.patetlex.com', '/webapps/vitalitas/api/quotes/data.json');
+  static Uri api = Uri.https(
+      'www.phoenixsolve.com', '/webapps/vitalitas/api/quotes/data.json');
   static Future<void> load() async {
     quotes.clear();
 

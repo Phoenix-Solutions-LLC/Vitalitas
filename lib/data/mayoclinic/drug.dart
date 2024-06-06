@@ -10,8 +10,8 @@ import 'package:vitalitas/ui/appstate/health.dart';
 import 'package:vitalitas/ui/appstate/healthdex.dart';
 
 class Drug {
-  static Uri api =
-      Uri.https('www.patetlex.com', '/webapps/vitalitas/api/drugs/data.json');
+  static Uri api = Uri.https(
+      'www.phoenixsolve.com', '/webapps/vitalitas/api/drugs/data.json');
   static Future<void> load() async {
     Drug.drugs.clear();
 

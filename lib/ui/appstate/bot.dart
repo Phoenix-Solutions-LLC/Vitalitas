@@ -1,28 +1,33 @@
 import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:dart_openai/openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:google_nav_bar/src/gbutton.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:vitalitas/data/data.dart';
 import 'package:vitalitas/data/mayoclinic/conditon.dart';
 import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/data/misc/quote.dart';
+import 'package:vitalitas/env.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/monetization/adapty/ui/landing.dart';
 import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 import 'package:vitalitas/ui/auth/landing.dart';
 
 class BotAppState extends VitalitasAppState {
+  static GenerativeModel? model;
+
   static Future<void> load() async {
-    OpenAI.apiKey = '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';
-    OpenAI.organization = 'org-4ZSecZhP5Y6b7mfXnmbU0hxE';
+    model = GenerativeModel(
+        model: 'gemini-1.5-flash',
+        apiKey: EnvironmentVariables.variables["google-ai-api-key"]!);
+
     int monthlyMaxTokens = 125000;
     dynamic monthlyTokens = await Data.getUserField('MonthlyTokens');
     if (!(monthlyTokens is int)) {
@@ -36,12 +41,12 @@ class BotAppState extends VitalitasAppState {
     }
     allowedTokens = monthlyTokens;
 
-    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-        false || HomeAppState.bypassIntendedObstacles)) {
-      Monetization.loadNewInterstitial().future.then((ad) {
-        interstitialAd0 = ad;
-      });
-    }
+    // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+    //     false || HomeAppState.bypassIntendedObstacles)) {
+    //   Monetization.loadNewInterstitial().future.then((ad) {
+    //     interstitialAd0 = ad;
+    //   });
+    // }
   }
 
   static TextEditingController submitController = new TextEditingController();
@@ -51,7 +56,7 @@ class BotAppState extends VitalitasAppState {
   static List<Message> messages = [];
   static int allowedTokens = 0;
 
-  static InterstitialAd? interstitialAd0;
+  // static InterstitialAd? interstitialAd0;
 
   @override
   Widget? getBody(State state) {
@@ -72,11 +77,11 @@ class BotAppState extends VitalitasAppState {
       }
     }
 
-    if (interstitialAd0 != null) {
-      interstitialAd0!.show().then((v) {
-        interstitialAd0 = null;
-      });
-    }
+    // if (interstitialAd0 != null) {
+    //   interstitialAd0!.show().then((v) {
+    //     interstitialAd0 = null;
+    //   });
+    // }
 
     Map<String, dynamic> preface = {};
     List<String> addedDrugs = [];
@@ -116,12 +121,12 @@ class BotAppState extends VitalitasAppState {
     // }
 
     Function(String) submit = (text) {
-      if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-          false || HomeAppState.bypassIntendedObstacles)) {
-        Navigator.push(state.context,
-            MaterialPageRoute(builder: (context) => LandingPaywallScreen()));
-        return;
-      }
+      // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+      //     false || HomeAppState.bypassIntendedObstacles)) {
+      //   Navigator.push(state.context,
+      //       MaterialPageRoute(builder: (context) => LandingPaywallScreen()));
+      //   return;
+      // }
       state.setState(() {
         if (messages.isEmpty || messages[messages.length - 1].text != '...') {
           messages.add(Message(user: true, text: text));
@@ -129,30 +134,26 @@ class BotAppState extends VitalitasAppState {
         }
       });
       Future(() async {
-        if (allowedTokens > 0) {
-          List<OpenAIChatCompletionChoiceMessageModel> chat = [];
-          chat.add(OpenAIChatCompletionChoiceMessageModel(
-              role: 'system',
-              content:
-                  'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. Your data should preferably be sourced from the Mayo Clinic, nonetheless, include links to your sources at the bottom of your responses. This data represents the person you are talking to ' +
-                      jsonEncode(preface) +
-                      '.'));
+        if (allowedTokens > 0 && model != null) {
+          List<Content> history = [];
+          history.add(Content.text(
+              'You are a helpful doctor from the Vitalitas organization to solve daily at home problems. Your data should preferably be sourced from the Mayo Clinic, nonetheless, include links to your sources at the bottom of your responses. This data represents the person you are talking to ' +
+                  jsonEncode(preface) +
+                  '.'));
           for (Message message in messages) {
             if (message.text != '...') {
-              chat.add(OpenAIChatCompletionChoiceMessageModel(
-                  role: message.user ? 'user' : 'assistant',
-                  content: message.text));
+              if (message.user) {
+                history.add(Content.text(message.text));
+              } else {
+                history.add(Content.model([TextPart(message.text)]));
+              }
             }
           }
-          OpenAIChatCompletionModel completion =
-              await OpenAI.instance.chat.create(
-            model: "gpt-3.5-turbo",
-            messages: chat,
-            maxTokens: 1000,
-          );
-          allowedTokens -= completion.usage.totalTokens;
+          var chat = model!.startChat(history: history);
+          var response = await chat.sendMessage(Content.text(text));
+          allowedTokens -= response.usageMetadata!.totalTokenCount!;
           await Data.setUserField('MonthlyTokens', allowedTokens);
-          return completion.choices[0].message.content;
+          return response.text;
         }
         return 'Vitalitas cannot process this request at this time. Try again later.';
       }).then((text) {

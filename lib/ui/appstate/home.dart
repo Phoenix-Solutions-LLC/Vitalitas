@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:adapty_flutter/adapty_flutter.dart';
+// import 'package:adapty_flutter/adapty_flutter.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:like_button/like_button.dart';
 import 'package:vitalitas/data/bodybuilding/exercise.dart';
@@ -71,42 +71,42 @@ class HomePage extends StatefulWidget {
 
 class HomeAppState extends VitalitasAppState {
   static bool initalBuilt = false;
-  static AdaptyProfile? profile;
+  // static AdaptyProfile? profile;
   static bool bypassIntendedObstacles = false;
 
   static String? surveyFeedback;
-  static BannerAd? bannerAd0;
-  static BannerAd? bannerAd1;
-  static InterstitialAd? interstitialAd0;
+  // static BannerAd? bannerAd0;
+  // static BannerAd? bannerAd1;
+  // static InterstitialAd? interstitialAd0;
 
   static void load() {
-    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-        false || HomeAppState.bypassIntendedObstacles)) {
-      Monetization.loadNewInterstitial().future.then((ad) {
-        interstitialAd0 = ad;
-      });
-    }
+    // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+    //     false || HomeAppState.bypassIntendedObstacles)) {
+    //   Monetization.loadNewInterstitial().future.then((ad) {
+    //     interstitialAd0 = ad;
+    //   });
+    // }
   }
 
   @override
   void changeDependencies() {
-    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-        false || HomeAppState.bypassIntendedObstacles)) {
-      bannerAd0 = Monetization.loadNewBanner();
-      bannerAd1 = Monetization.loadNewBanner();
-    }
+    // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+    //     false || HomeAppState.bypassIntendedObstacles)) {
+    //   bannerAd0 = Monetization.loadNewBanner();
+    //   bannerAd1 = Monetization.loadNewBanner();
+    // }
   }
 
   @override
   void dispose() {
-    if (bannerAd0 != null) {
-      bannerAd0!.dispose();
-      bannerAd0 = null;
-    }
-    if (bannerAd1 != null) {
-      bannerAd1!.dispose();
-      bannerAd1 = null;
-    }
+    // if (bannerAd0 != null) {
+    //   bannerAd0!.dispose();
+    //   bannerAd0 = null;
+    // }
+    // if (bannerAd1 != null) {
+    //   bannerAd1!.dispose();
+    //   bannerAd1 = null;
+    // }
   }
 
   @override
@@ -228,18 +228,19 @@ class HomeAppState extends VitalitasAppState {
                 ),
               ]),
             )),
-        (bannerAd0 != null
-            ? Center(
-                child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SafeArea(
-                    child: SizedBox(
-                  width: bannerAd0!.size.width.toDouble(),
-                  height: bannerAd0!.size.height.toDouble(),
-                  child: AdWidget(ad: bannerAd0!),
-                )),
-              ))
-            : Container()),
+        // (bannerAd0 != null
+        //     ? Center(
+        //         child: Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 10),
+        //         child: SafeArea(
+        //             child: SizedBox(
+        //           width: bannerAd0!.size.width.toDouble(),
+        //           height: bannerAd0!.size.height.toDouble(),
+        //           child: AdWidget(ad: bannerAd0!),
+        //         )),
+        //       ))
+        //     : Container()),
+        Container(),
         Padding(
             padding: EdgeInsets.all(35),
             child: Column(
@@ -325,18 +326,19 @@ class HomeAppState extends VitalitasAppState {
                 )
               ],
             )),
-        (bannerAd1 != null
-            ? Center(
-                child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: SafeArea(
-                    child: SizedBox(
-                  width: bannerAd1!.size.width.toDouble(),
-                  height: bannerAd1!.size.height.toDouble(),
-                  child: AdWidget(ad: bannerAd1!),
-                )),
-              ))
-            : Container()),
+        // (bannerAd1 != null
+        //     ? Center(
+        //         child: Padding(
+        //         padding: EdgeInsets.symmetric(vertical: 10),
+        //         child: SafeArea(
+        //             child: SizedBox(
+        //           width: bannerAd1!.size.width.toDouble(),
+        //           height: bannerAd1!.size.height.toDouble(),
+        //           child: AdWidget(ad: bannerAd1!),
+        //         )),
+        //       ))
+        //     : Container()),
+        Container(),
         SizedBox(
           height: 50,
         ),
@@ -348,13 +350,13 @@ class HomeAppState extends VitalitasAppState {
   @override
   GButton getNavButton() {
     return GButton(
-        icon: Icons.home_outlined,
-        text: 'Home',
-        iconActiveColor: HSLColor.fromColor(Vitalitas.theme.fg!)
-            .withLightness(0.2)
-            .toColor(),
-        backgroundColor: Vitalitas.theme.fg,
-        iconColor: Vitalitas.theme.bg);
+      icon: Icons.home_outlined,
+      text: 'Home',
+      iconActiveColor:
+          HSLColor.fromColor(Vitalitas.theme.fg!).withLightness(0.2).toColor(),
+      backgroundColor: Vitalitas.theme.fg,
+      iconColor: Vitalitas.theme.bg,
+    );
   }
 
   Widget getWorkoutWidget(State state, Workout workout) {
@@ -496,16 +498,16 @@ class HomeAppState extends VitalitasAppState {
                           state.setState(() {
                             set.complete = !isLiked;
                           });
-                          if (interstitialAd0 != null) {
-                            interstitialAd0!.show().then((v) {
-                              interstitialAd0 = null;
-                              Monetization.loadNewInterstitial()
-                                  .future
-                                  .then((ad) {
-                                interstitialAd0 = ad;
-                              });
-                            });
-                          }
+                          // if (interstitialAd0 != null) {
+                          //   interstitialAd0!.show().then((v) {
+                          //     interstitialAd0 = null;
+                          //     Monetization.loadNewInterstitial()
+                          //         .future
+                          //         .then((ad) {
+                          //       interstitialAd0 = ad;
+                          //     });
+                          //   });
+                          // }
                           Workout.update();
                           return !isLiked;
                         },
@@ -579,19 +581,25 @@ class HomeState extends State<HomePage> {
         loading = true;
       });
 
-      if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
-        if (HomeAppState.profile == null) {
-          HomeAppState.profile = await Adapty().getProfile();
-          dynamic prem = await Data.getUserField('Premium');
-          if (prem != null && prem is bool) {
-            HomeAppState.bypassIntendedObstacles = prem;
-          }
-        }
-      }
+      // if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+      //   if (HomeAppState.profile == null) {
+      //     HomeAppState.profile = await Adapty().getProfile();
+      //     dynamic prem = await Data.getUserField('Premium');
+      //     if (prem != null && prem is bool) {
+      //       HomeAppState.bypassIntendedObstacles = prem;
+      //     }
+      //   }
+      // }
 
+      print("Start Initial Building.");
+
+      print("Conditions Loading");
       await Condition.load();
+      print("Drugs Loading");
       await Drug.load();
+      print("Exercises Loading");
       await Exercise.load();
+      print("Quotes Loading");
       await Quote.load();
       await HealthAppState.load();
       await BotAppState.load();
@@ -617,18 +625,18 @@ class HomeState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    () async {
-      if (HomeAppState.profile == null) {
-        HomeAppState.profile = await Adapty().getProfile();
-        dynamic prem = await Data.getUserField('Premium');
-        if (prem != null && prem is bool) {
-          HomeAppState.bypassIntendedObstacles = prem;
-        }
-      }
-      for (VitalitasAppState state in HomePage.appStates) {
-        state.changeDependencies();
-      }
-    }();
+    // () async {
+    //   if (HomeAppState.profile == null) {
+    //     HomeAppState.profile = await Adapty().getProfile();
+    //     dynamic prem = await Data.getUserField('Premium');
+    //     if (prem != null && prem is bool) {
+    //       HomeAppState.bypassIntendedObstacles = prem;
+    //     }
+    //   }
+    //   for (VitalitasAppState state in HomePage.appStates) {
+    //     state.changeDependencies();
+    //   }
+    // }();
   }
 
   @override

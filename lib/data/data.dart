@@ -5,14 +5,18 @@ class Data {
   static final FirebaseFirestore store = FirebaseFirestore.instance;
 
   static Future<DocumentReference<Object?>?> currentUserDoc() async {
-    CollectionReference users = store.collection('Users');
+    CollectionReference users = store.collection('users');
     DocumentReference doc = users.doc(Authentification.currentUser!.uid);
-    DocumentSnapshot snapshot = await doc.get();
-    if (snapshot == null || !snapshot.exists) {
-      await doc.set({
-        'Username': Authentification.currentUser!.displayName,
-        'Email': Authentification.currentUser!.email,
-      });
+    try {
+      DocumentSnapshot snapshot = await doc.get();
+      if (snapshot == null || !snapshot.exists) {
+        await doc.set({
+          'Username': Authentification.currentUser!.displayName,
+          'Email': Authentification.currentUser!.email,
+        });
+      }
+    } catch (e) {
+      print(e);
     }
     return doc;
   }

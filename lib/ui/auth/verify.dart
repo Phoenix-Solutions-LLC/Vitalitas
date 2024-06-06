@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
@@ -18,9 +19,13 @@ class VerifyPageState extends State<VerifyPage> {
 
   Widget resendButton() {
     return InkWell(
-        onTap: () {
-          if (Authentification.currentUser != null) {
-            Authentification.currentUser!.sendEmailVerification();
+        onTap: () async {
+          try {
+            if (Authentification.currentUser != null) {
+              await Authentification.currentUser!.sendEmailVerification();
+            }
+          } catch (e) {
+            print(e);
           }
         },
         child: Container(
@@ -58,17 +63,19 @@ class VerifyPageState extends State<VerifyPage> {
         Authentification.currentUser!.sendEmailVerification();
 
         verificationTimer = Timer.periodic(Duration(seconds: 3), (timer) async {
+          print("reload");
           await Authentification.currentUser!.reload();
 
           verified = Authentification.currentUser!.emailVerified;
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => HomePage()));
-
           if (verified) {
+            print("push");
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => HomePage()));
             timer.cancel();
           }
         });
       } else {
+        print("Pushed to Home");
         WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => HomePage()));

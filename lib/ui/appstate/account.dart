@@ -258,101 +258,193 @@ class AccountAppState extends VitalitasAppState {
                           size: 200,
                         )))),
       SizedBox(height: 50),
-      ((HomeAppState.profile?.accessLevels['premium']?.isActive ??
-              false || HomeAppState.bypassIntendedObstacles)
-          ? Column(
-              children: [
-                Center(
-                  child: Text(
-                    'Exercise',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Comfort',
-                        fontSize: 35,
-                        color: Vitalitas.theme.txt),
-                  ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Center(
-                  child: Text(
-                    'Sets Per Workout',
-                    style: TextStyle(
-                        fontFamily: 'Comfort',
-                        fontSize: 20,
-                        color: Vitalitas.theme.txt),
-                  ),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80),
-                    child: NumberInputPrefabbed.roundedButtons(
-                      controller: TextEditingController(),
-                      incDecBgColor: Vitalitas.theme.fg!,
-                      incIconColor: Vitalitas.theme.bg,
-                      decIconColor: Vitalitas.theme.bg,
-                      initialValue: Exercise.setsPerWorkout!,
-                      buttonArrangement: ButtonArrangement.incLeftDecRight,
-                      onChanged: (num) {
-                        Data.setUserField('WorkoutsSets', num);
-                        Exercise.setsPerWorkout = num as int;
-                      },
-                      onIncrement: (num) {
-                        Data.setUserField('WorkoutsSets', num);
-                        Exercise.setsPerWorkout = num as int;
-                      },
-                      onDecrement: (num) {
-                        Data.setUserField('WorkoutsSets', num);
-                        Exercise.setsPerWorkout = num as int;
-                      },
-                      min: 1,
-                      max: 5,
-                    )),
-                SizedBox(
-                  height: 5,
-                ),
-                Center(
-                  child: Text(
-                    'Exercises Per Set',
-                    style: TextStyle(
-                        fontFamily: 'Comfort',
-                        fontSize: 20,
-                        color: Vitalitas.theme.txt),
-                  ),
-                ),
-                SizedBox(
-                  height: 3,
-                ),
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 80),
-                    child: NumberInputPrefabbed.roundedButtons(
-                      controller: TextEditingController(),
-                      incDecBgColor: Vitalitas.theme.fg!,
-                      incIconColor: Vitalitas.theme.bg,
-                      decIconColor: Vitalitas.theme.bg,
-                      initialValue: Exercise.exercisesPerSetPerWorkout!,
-                      buttonArrangement: ButtonArrangement.incLeftDecRight,
-                      onChanged: (num) {
-                        Data.setUserField('WorkoutsExercisesPerSet', num);
-                        Exercise.exercisesPerSetPerWorkout = num as int;
-                      },
-                      onIncrement: (num) {
-                        Data.setUserField('WorkoutsExercisesPerSet', num);
-                        Exercise.exercisesPerSetPerWorkout = num as int;
-                      },
-                      onDecrement: (num) {
-                        Data.setUserField('WorkoutsExercisesPerSet', num);
-                        Exercise.exercisesPerSetPerWorkout = num as int;
-                      },
-                      min: 1,
-                      max: 5,
-                    )),
-              ],
-            )
-          : Container()),
+      // ((HomeAppState.profile?.accessLevels['premium']?.isActive ??
+      //         false || HomeAppState.bypassIntendedObstacles)
+      //     ? Column(
+      //         children: [
+      //           Center(
+      //             child: Text(
+      //               'Exercise',
+      //               style: TextStyle(
+      //                   fontWeight: FontWeight.bold,
+      //                   fontFamily: 'Comfort',
+      //                   fontSize: 35,
+      //                   color: Vitalitas.theme.txt),
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 15,
+      //           ),
+      //           Center(
+      //             child: Text(
+      //               'Sets Per Workout',
+      //               style: TextStyle(
+      //                   fontFamily: 'Comfort',
+      //                   fontSize: 20,
+      //                   color: Vitalitas.theme.txt),
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 3,
+      //           ),
+      //           Padding(
+      //               padding: EdgeInsets.symmetric(horizontal: 80),
+      //               child: NumberInputPrefabbed.roundedButtons(
+      //                 controller: TextEditingController(),
+      //                 incDecBgColor: Vitalitas.theme.fg!,
+      //                 incIconColor: Vitalitas.theme.bg,
+      //                 decIconColor: Vitalitas.theme.bg,
+      //                 initialValue: Exercise.setsPerWorkout!,
+      //                 buttonArrangement: ButtonArrangement.incLeftDecRight,
+      //                 onChanged: (num) {
+      //                   Data.setUserField('WorkoutsSets', num);
+      //                   Exercise.setsPerWorkout = num as int;
+      //                 },
+      //                 onIncrement: (num) {
+      //                   Data.setUserField('WorkoutsSets', num);
+      //                   Exercise.setsPerWorkout = num as int;
+      //                 },
+      //                 onDecrement: (num) {
+      //                   Data.setUserField('WorkoutsSets', num);
+      //                   Exercise.setsPerWorkout = num as int;
+      //                 },
+      //                 min: 1,
+      //                 max: 5,
+      //               )),
+      //           SizedBox(
+      //             height: 5,
+      //           ),
+      //           Center(
+      //             child: Text(
+      //               'Exercises Per Set',
+      //               style: TextStyle(
+      //                   fontFamily: 'Comfort',
+      //                   fontSize: 20,
+      //                   color: Vitalitas.theme.txt),
+      //             ),
+      //           ),
+      //           SizedBox(
+      //             height: 3,
+      //           ),
+      //           Padding(
+      //               padding: EdgeInsets.symmetric(horizontal: 80),
+      //               child: NumberInputPrefabbed.roundedButtons(
+      //                 controller: TextEditingController(),
+      //                 incDecBgColor: Vitalitas.theme.fg!,
+      //                 incIconColor: Vitalitas.theme.bg,
+      //                 decIconColor: Vitalitas.theme.bg,
+      //                 initialValue: Exercise.exercisesPerSetPerWorkout!,
+      //                 buttonArrangement: ButtonArrangement.incLeftDecRight,
+      //                 onChanged: (num) {
+      //                   Data.setUserField('WorkoutsExercisesPerSet', num);
+      //                   Exercise.exercisesPerSetPerWorkout = num as int;
+      //                 },
+      //                 onIncrement: (num) {
+      //                   Data.setUserField('WorkoutsExercisesPerSet', num);
+      //                   Exercise.exercisesPerSetPerWorkout = num as int;
+      //                 },
+      //                 onDecrement: (num) {
+      //                   Data.setUserField('WorkoutsExercisesPerSet', num);
+      //                   Exercise.exercisesPerSetPerWorkout = num as int;
+      //                 },
+      //                 min: 1,
+      //                 max: 5,
+      //               )),
+      //         ],
+      //       )
+      //     : Container()),
+      Column(
+        children: [
+          Center(
+            child: Text(
+              'Exercise',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Comfort',
+                  fontSize: 35,
+                  color: Vitalitas.theme.txt),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Center(
+            child: Text(
+              'Sets Per Workout',
+              style: TextStyle(
+                  fontFamily: 'Comfort',
+                  fontSize: 20,
+                  color: Vitalitas.theme.txt),
+            ),
+          ),
+          SizedBox(
+            height: 3,
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 80),
+              child: NumberInputPrefabbed.roundedButtons(
+                controller: TextEditingController(),
+                incDecBgColor: Vitalitas.theme.fg!,
+                incIconColor: Vitalitas.theme.bg,
+                decIconColor: Vitalitas.theme.bg,
+                initialValue: Exercise.setsPerWorkout!,
+                buttonArrangement: ButtonArrangement.incLeftDecRight,
+                onChanged: (num) {
+                  Data.setUserField('WorkoutsSets', num);
+                  Exercise.setsPerWorkout = num as int;
+                },
+                onIncrement: (num) {
+                  Data.setUserField('WorkoutsSets', num);
+                  Exercise.setsPerWorkout = num as int;
+                },
+                onDecrement: (num) {
+                  Data.setUserField('WorkoutsSets', num);
+                  Exercise.setsPerWorkout = num as int;
+                },
+                min: 1,
+                max: 5,
+              )),
+          SizedBox(
+            height: 5,
+          ),
+          Center(
+            child: Text(
+              'Exercises Per Set',
+              style: TextStyle(
+                  fontFamily: 'Comfort',
+                  fontSize: 20,
+                  color: Vitalitas.theme.txt),
+            ),
+          ),
+          SizedBox(
+            height: 3,
+          ),
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 80),
+              child: NumberInputPrefabbed.roundedButtons(
+                controller: TextEditingController(),
+                incDecBgColor: Vitalitas.theme.fg!,
+                incIconColor: Vitalitas.theme.bg,
+                decIconColor: Vitalitas.theme.bg,
+                initialValue: Exercise.exercisesPerSetPerWorkout!,
+                buttonArrangement: ButtonArrangement.incLeftDecRight,
+                onChanged: (num) {
+                  Data.setUserField('WorkoutsExercisesPerSet', num);
+                  Exercise.exercisesPerSetPerWorkout = num as int;
+                },
+                onIncrement: (num) {
+                  Data.setUserField('WorkoutsExercisesPerSet', num);
+                  Exercise.exercisesPerSetPerWorkout = num as int;
+                },
+                onDecrement: (num) {
+                  Data.setUserField('WorkoutsExercisesPerSet', num);
+                  Exercise.exercisesPerSetPerWorkout = num as int;
+                },
+                min: 1,
+                max: 5,
+              )),
+        ],
+      ),
       SizedBox(
         height: 20,
       ),
@@ -375,46 +467,46 @@ class AccountAppState extends VitalitasAppState {
       SizedBox(
         height: 5,
       ),
-      (!(HomeAppState.profile?.accessLevels['premium']?.isActive ?? false))
-          ? AnimatedButton(
-              text: 'Upgrade to Plus',
-              textStyle: TextStyle(
-                fontFamily: 'Comfort',
-                color: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
-                    .withLightness(0.2)
-                    .toColor(),
-                fontSize: 14,
-              ),
-              onPress: () {
-                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-                  Navigator.push(
-                      state.context,
-                      MaterialPageRoute(
-                          builder: (context) => LandingPaywallScreen()));
-                });
-              },
-              animatedOn: AnimatedOn.onHover,
-              height: 50,
-              width: 150,
-              borderWidth: 4,
-              borderRadius: 25,
-              backgroundColor:
-                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
-                      .withLightness(0.8)
-                      .toColor(),
-              selectedBackgroundColor:
-                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
-                      .withLightness(0.2)
-                      .toColor(),
-              selectedTextColor:
-                  HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
-                      .withLightness(0.8)
-                      .toColor(),
-              borderColor: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
-                  .withLightness(0.1)
-                  .toColor(),
-            )
-          : Container(),
+      // (!(HomeAppState.profile?.accessLevels['premium']?.isActive ?? false))
+      //     ? AnimatedButton(
+      //         text: 'Upgrade to Plus',
+      //         textStyle: TextStyle(
+      //           fontFamily: 'Comfort',
+      //           color: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+      //               .withLightness(0.2)
+      //               .toColor(),
+      //           fontSize: 14,
+      //         ),
+      //         onPress: () {
+      //           WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      //             Navigator.push(
+      //                 state.context,
+      //                 MaterialPageRoute(
+      //                     builder: (context) => LandingPaywallScreen()));
+      //           });
+      //         },
+      //         animatedOn: AnimatedOn.onHover,
+      //         height: 50,
+      //         width: 150,
+      //         borderWidth: 4,
+      //         borderRadius: 25,
+      //         backgroundColor:
+      //             HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+      //                 .withLightness(0.8)
+      //                 .toColor(),
+      //         selectedBackgroundColor:
+      //             HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+      //                 .withLightness(0.2)
+      //                 .toColor(),
+      //         selectedTextColor:
+      //             HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+      //                 .withLightness(0.8)
+      //                 .toColor(),
+      //         borderColor: HSLColor.fromColor(Color.fromARGB(255, 255, 215, 0))
+      //             .withLightness(0.1)
+      //             .toColor(),
+      //       )
+      //     : Container(),
       SizedBox(
         height: 15,
       ),
@@ -522,7 +614,7 @@ class AccountAppState extends VitalitasAppState {
       ),
       Center(
         child: Text(
-          'support@patetlex.com',
+          'tphoenix@mit.edu',
           style: TextStyle(
               fontFamily: 'Comfort', fontSize: 15, color: Vitalitas.theme.txt),
         ),

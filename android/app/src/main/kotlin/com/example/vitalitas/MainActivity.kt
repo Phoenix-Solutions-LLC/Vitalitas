@@ -1,6 +1,5 @@
-package com.patetlex.vitalitas
+package com.phoenixsolutions.vitalitas
 
 import io.flutter.embedding.android.FlutterActivity
 
-class MainActivity: FlutterActivity() {
-}
+class MainActivity: FlutterActivity()

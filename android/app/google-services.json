@@ -1,51 +1,26 @@
 {
   "project_info": {
-    "project_number": "966765070451",
-    "project_id": "vitalitas-bb512",
-    "storage_bucket": "vitalitas-bb512.appspot.com"
+    "project_number": "1090975046021",
+    "project_id": "vitalitas-4bb9e",
+    "storage_bucket": "vitalitas-4bb9e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:966765070451:android:e727c0f0b46b0d76520206",
+        "mobilesdk_app_id": "1:1090975046021:android:5eee3ea0ff40d48cf1ccec",
         "android_client_info": {
-          "package_name": "com.patetlex.vitalitas"
+          "package_name": "com.phoenixsolve.vitalitas"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "966765070451-11pge8nb6ug2aegfuheigd55su9tk39f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.patetlex.vitalitas",
-            "certificate_hash": "c26b3f7e6842b09904d4fba113c5dd67e5e8cc53"
-          }
-        },
-        {
-          "client_id": "966765070451-bpbo681pps1c1h434aj4dnk8a2ft0krv.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCv8NhhZ_eN6xBHIu6dwILoxHZKrnnYIz8"
+          "current_key": "AIzaSyAVqhhYsQYA5ngG8EyEpaSOw_S_D51UVNk"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "966765070451-bpbo681pps1c1h434aj4dnk8a2ft0krv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "966765070451-5vpltadtciboa93sb6ldm7sqk98188k3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.patetlex.vitalitas"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

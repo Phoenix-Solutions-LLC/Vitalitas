@@ -8,32 +8,31 @@ import 'package:vitalitas/data/mayoclinic/drug.dart';
 import 'package:vitalitas/main.dart';
 import 'package:vitalitas/monetization/ads.dart';
 import 'package:vitalitas/ui/appstate/appstate.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
+// import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:vitalitas/ui/appstate/home.dart';
 
 class HealthdexAppState extends VitalitasAppState {
   static dynamic currentScreen = 'main';
-  static BannerAd? bannerAd0;
+  // static BannerAd? bannerAd0;
 
   @override
   void changeDependencies() {
-    if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
-        false || HomeAppState.bypassIntendedObstacles)) {
-      bannerAd0 = Monetization.loadNewBanner();
-    }
+    // if (!(HomeAppState.profile?.accessLevels['premium']?.isActive ??
+    //     false || HomeAppState.bypassIntendedObstacles)) {
+    //   bannerAd0 = Monetization.loadNewBanner();
+    // }
   }
 
   @override
   void dispose() {
-    if (bannerAd0 != null) {
-      bannerAd0!.dispose();
-      bannerAd0 = null;
-    }
+    // if (bannerAd0 != null) {
+    //   bannerAd0!.dispose();
+    //   bannerAd0 = null;
+    // }
   }
 
   @override
   Widget? getBody(State state) {
-    print(bannerAd0);
     var main = Center(
         child: Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -146,18 +145,19 @@ class HealthdexAppState extends VitalitasAppState {
             SizedBox(
               height: 20,
             ),
-            (bannerAd0 != null
-                ? Center(
-                    child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: SafeArea(
-                        child: SizedBox(
-                      width: bannerAd0!.size.width.toDouble(),
-                      height: bannerAd0!.size.height.toDouble(),
-                      child: AdWidget(ad: bannerAd0!),
-                    )),
-                  ))
-                : Container()),
+            // (bannerAd0 != null
+            //     ? Center(
+            //         child: Padding(
+            //         padding: EdgeInsets.symmetric(vertical: 10),
+            //         child: SafeArea(
+            //             child: SizedBox(
+            //           width: bannerAd0!.size.width.toDouble(),
+            //           height: bannerAd0!.size.height.toDouble(),
+            //           child: AdWidget(ad: bannerAd0!),
+            //         )),
+            //       ))
+            //     : Container()),
+            Container(),
             SizedBox(
               height: 20,
             ),
