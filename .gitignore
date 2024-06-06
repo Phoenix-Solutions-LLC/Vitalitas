@@ -1,12 +1,6 @@
 # Added
 env.dart
-android/
-ios/
-build/
-linux/
-macos/
-test/
-windows/
+firebase_options.dart
 
 # Miscellaneous
 *.class
