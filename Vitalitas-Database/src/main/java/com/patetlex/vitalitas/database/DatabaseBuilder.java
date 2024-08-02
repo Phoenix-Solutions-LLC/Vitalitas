@@ -21,6 +21,43 @@ public class DatabaseBuilder {
     private Map<ScrapeableSitemap, List<DataEntry>> data = new HashMap<>();
     private String log = "";
 
+    public DatabaseBuilder crop(int start, ScrapeableSitemap map) {
+        List<DataEntry> subEntry = new ArrayList<>();
+        for (int i = start; i < this.data.get(map).size(); i++) {
+            DataEntry entry = this.data.get(map).get(i);
+            subEntry.add(entry);
+        }
+        this.data.remove(map);
+        this.data.put(map, subEntry);
+
+        this.trainingData.clear();
+        for (ScrapeableSitemap map0 : this.data.keySet()) {
+            for (DataEntry entry : this.data.get(map0)) {
+                this.trainingData.addAll(entry.buildTrainingEntries());
+            }
+        }
+        return this;
+    }
+    public DatabaseBuilder crop(int start, int end, ScrapeableSitemap map) {
+        List<DataEntry> subEntry = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            if (i < this.data.get(map).size()) {
+                DataEntry entry = this.data.get(map).get(i);
+                subEntry.add(entry);
+            }
+        }
+        this.data.remove(map);
+        this.data.put(map, subEntry);
+
+        this.trainingData.clear();
+        for (ScrapeableSitemap map0 : this.data.keySet()) {
+            for (DataEntry entry : this.data.get(map0)) {
+                this.trainingData.addAll(entry.buildTrainingEntries());
+            }
+        }
+        return this;
+    }
+
     public DatabaseBuilder addTrainingData(TrainingEntry entry) {
         this.trainingData.add(entry);
         return this;
@@ -64,7 +101,7 @@ public class DatabaseBuilder {
 
     public DatabaseBuilder fromApi(ScrapeableSitemap preBuild) {
         try {
-            Scanner scanner = new Scanner(new URL("https://www.patetlex.com/webapps/vitalitas/api/" + preBuild.getName() + "/data.json").openStream());
+            Scanner scanner = new Scanner(new URL("https://www.phoenixsolve.com/webapps/vitalitas/api/" + preBuild.getName() + "/data.json").openStream());
             StringBuffer buffer = new StringBuffer();
             while (scanner.hasNext()) {
                 buffer.append(scanner.next() + " ");

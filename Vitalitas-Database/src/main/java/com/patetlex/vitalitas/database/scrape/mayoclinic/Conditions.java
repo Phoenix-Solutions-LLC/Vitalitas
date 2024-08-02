@@ -11,10 +11,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -393,6 +390,8 @@ public class Conditions extends ScrapeableSitemap {
         public List<String> diagnosis;
         public List<String> treatment;
         public String backLink;
+
+        public Map<String, Integer> similarities;
 
         @Override
         public List<TrainingEntry> buildTrainingEntries() {

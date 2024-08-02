@@ -111,6 +111,9 @@ public class Drugs extends ScrapeableSitemap {
         public String description;
         public Map<String, List<String>> symptoms;
         public String backLink;
+        public List<String> routes;
+
+        public Map<String, Integer> similarities;
 
         @Override
         public List<TrainingEntry> buildTrainingEntries() {
