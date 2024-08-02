@@ -6,10 +6,7 @@ import com.patetlex.vitalitas.database.scrape.ScrapeableSitemap;
 import com.patetlex.vitalitas.database.scrape.mayoclinic.Conditions;
 import com.patetlex.vitalitas.database.scrape.mayoclinic.Drugs;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class MayoClinicHelper {
@@ -38,8 +35,10 @@ public class MayoClinicHelper {
             }
         }
     }
-
     public static void propagateSimilarities(DatabaseBuilder builder) {
+        propagateSimilarities(builder, 10);
+    }
+    public static void propagateSimilarities(DatabaseBuilder builder, int maxEntries) {
         int totalElements = 0;
         for (ScrapeableSitemap map : builder.getData().keySet()) {
             totalElements += builder.getData().get(map).size();
@@ -49,6 +48,7 @@ public class MayoClinicHelper {
         System.out.println("Total Iterations: " + (totalElements * (totalElements - 1)));
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         long totalTime = 0;
+        int totalIterations = totalElements * (totalElements - 1);
         int iteration = 0;
         for (ScrapeableSitemap map0 : builder.getData().keySet()) {
             for (DataEntry entry0 : builder.getData().get(map0)) {
@@ -79,7 +79,7 @@ public class MayoClinicHelper {
                             long delta = System.nanoTime() - start;
                             totalTime += delta;
                             iteration++;
-                            if (iteration % 50000 == 0) {
+                            if (iteration % Math.round(((float) totalIterations) * 0.02F) == 0) {
                                 System.out.println("Percent done: " + String.valueOf(((float) iteration / ((float) totalElements * totalElements)) * 100));
                                 long timeToGo = ((totalTime / iteration) * (((long) totalElements * totalElements) - iteration));
                                 System.out.println("Time to go: " + TimeUnit.MINUTES.convert(timeToGo, TimeUnit.NANOSECONDS) + " minutes");
@@ -87,6 +87,82 @@ public class MayoClinicHelper {
                             }
                         }
                     }
+                }
+            }
+        }
+        System.out.println("Cleaning data to " + (maxEntries) + " entries.");
+        System.out.println("Total Elements: " + totalElements);
+        System.out.println("Total Iterations: " + totalElements);
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        totalTime = 0;
+        iteration = 0;
+        totalIterations = totalElements;
+        for (ScrapeableSitemap map : builder.getData().keySet()) {
+            for (DataEntry entry : builder.getData().get(map)) {
+                long start = System.nanoTime();
+                if (entry instanceof Drugs.DrugEntry) {
+                    Drugs.DrugEntry drug = (Drugs.DrugEntry) entry;
+                    int hV = 0;
+                    for (String pocId : drug.similarities.keySet()) {
+                        int v = drug.similarities.get(pocId);
+                        if (v > hV) {
+                            hV = v;
+                        }
+                    }
+
+                    Map<String, Integer> nSim = new HashMap<>();
+                    for (int i = hV; i >= 0; i--) {
+                        if (nSim.size() >= maxEntries) {
+                            break;
+                        }
+                        String removeId = null;
+                        for (String pocId : drug.similarities.keySet()) {
+                            int v = drug.similarities.get(pocId);
+                            if (v == i) {
+                                removeId = pocId;
+                                nSim.put(pocId, v);
+                                break;
+                            }
+                        }
+                        drug.similarities.remove(removeId);
+                    }
+                    drug.similarities = nSim;
+                } else if (entry instanceof Conditions.ConditionEntry) {
+                    Conditions.ConditionEntry condition = (Conditions.ConditionEntry) entry;
+                    int hV = 0;
+                    for (String pocId : condition.similarities.keySet()) {
+                        int v = condition.similarities.get(pocId);
+                        if (v > hV) {
+                            hV = v;
+                        }
+                    }
+
+                    Map<String, Integer> nSim = new HashMap<>();
+                    for (int i = hV; i >= 0; i--) {
+                        if (nSim.size() >= maxEntries) {
+                            break;
+                        }
+                        String removeId = null;
+                        for (String pocId : condition.similarities.keySet()) {
+                            int v = condition.similarities.get(pocId);
+                            if (v == i) {
+                                removeId = pocId;
+                                nSim.put(pocId, v);
+                                break;
+                            }
+                        }
+                        condition.similarities.remove(removeId);
+                    }
+                    condition.similarities = nSim;
+                }
+                long delta = System.nanoTime() - start;
+                totalTime += delta;
+                iteration++;
+                if (iteration % Math.round(((float) totalIterations) * 0.02F) == 0) {
+                    System.out.println("Percent done: " + String.valueOf(((float) iteration / ((float) totalElements)) * 100));
+                    long timeToGo = ((totalTime / iteration) * (((long) totalElements) - iteration));
+                    System.out.println("Time to go: " + TimeUnit.MINUTES.convert(timeToGo, TimeUnit.NANOSECONDS) + " minutes");
+                    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
                 }
             }
         }
